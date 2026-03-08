@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WTG SARLU - Partenaire Logistique Stratégique</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        heading: ['"Bricolage Grotesque"', 'sans-serif'],
+                        body: ['"DM Sans"', 'sans-serif'],
+                    },
+                    colors: {
+                        navy: {
+                            950: '#06101e',
+                            900: '#0b1a30',
+                            800: '#0f2440',
+                            700: '#163356',
+                            600: '#1e4570',
+                            500: '#2a5a8f',
+                            400: '#3b7cc4',
+                            300: '#5ca0e6',
+                            200: '#8fc3f5',
+                            100: '#c4e1fb',
+                            50: '#e8f3fe',
+                        },
+                        accent: {
+                            DEFAULT: '#38bdf8',
+                            light: '#7dd3fc',
+                            dark: '#0ea5e9',
+                            glow: '#38bdf840',
+                        },
+                    },
+                },
+            },
+        };
+    </script>
+    <style>
+        html { scroll-behavior: smooth; }
+        body { font-family: 'DM Sans', sans-serif; }
+        h1, h2, h3, h4, h5 { font-family: 'Bricolage Grotesque', sans-serif; }
+
+        /* === ANIMATIONS === */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-12px); }
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInLeft {
+            from { opacity: 0; transform: translateX(-40px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes fadeInRight {
+            from { opacity: 0; transform: translateX(40px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes shimmer {
+            0% { background-position: -200% center; }
+            100% { background-position: 200% center; }
+        }
+        @keyframes pulse-ring {
+            0% { transform: scale(1); opacity: 0.6; }
+            100% { transform: scale(1.4); opacity: 0; }
+        }
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .animate-fadeInUp { animation: fadeInUp 0.8s ease-out both; }
+        .animate-fadeInLeft { animation: fadeInLeft 0.8s ease-out both; }
+        .animate-fadeInRight { animation: fadeInRight 0.8s ease-out both; }
+        .animate-float { animation: float 6s ease-in-out infinite; }
+
+        .delay-100 { animation-delay: 0.1s; }
+        .delay-200 { animation-delay: 0.2s; }
+        .delay-300 { animation-delay: 0.3s; }
+        .delay-400 { animation-delay: 0.4s; }
+        .delay-500 { animation-delay: 0.5s; }
+        .delay-600 { animation-delay: 0.6s; }
+        .delay-700 { animation-delay: 0.7s; }
+
+        /* === HERO BACKGROUND PATTERN === */
+        .hero-pattern {
+            background-image:
+                radial-gradient(ellipse 80% 60% at 50% 0%, rgba(56, 189, 248, 0.15), transparent),
+                radial-gradient(ellipse 50% 40% at 80% 20%, rgba(14, 165, 233, 0.1), transparent),
+                radial-gradient(circle at 20% 80%, rgba(56, 189, 248, 0.08), transparent);
+        }
+
+        /* === GLASS CARD === */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .dark .glass-card {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        /* === SERVICE CARDS === */
+        .service-card {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #0ea5e9, #38bdf8, #7dd3fc);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+        .service-card:hover::before {
+            transform: scaleX(1);
+        }
+        .service-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 50px -12px rgba(14, 165, 233, 0.2);
+        }
+
+        /* === VALUE CARDS === */
+        .value-card {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+        .value-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #0ea5e9, #38bdf8);
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+        .value-card:hover::after {
+            transform: scaleX(1);
+        }
+        .value-card:hover {
+            transform: translateY(-4px);
+        }
+
+        /* === ICON PULSE === */
+        .icon-ring {
+            position: relative;
+        }
+        .icon-ring::before {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 50%;
+            border: 2px solid #38bdf8;
+            animation: pulse-ring 2s ease-out infinite;
+        }
+
+        /* === SHIMMER TEXT === */
+        .shimmer-text {
+            background: linear-gradient(90deg, #38bdf8, #7dd3fc, #e0f2fe, #7dd3fc, #38bdf8);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shimmer 4s linear infinite;
+        }
+
+        /* === NAV SCROLL STATE === */
+        .nav-scrolled {
+            box-shadow: 0 4px 30px rgba(6, 16, 30, 0.15);
+        }
+        .dark .nav-scrolled {
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        /* === GRADIENT BORDER === */
+        .gradient-border {
+            position: relative;
+            border-radius: 1rem;
+        }
+        .gradient-border::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            padding: 1.5px;
+            background: linear-gradient(135deg, #38bdf8, #0ea5e9, #1e4570, #38bdf8);
+            background-size: 300% 300%;
+            animation: gradientShift 6s ease infinite;
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+        }
+
+        /* === SECTION DIVIDER === */
+        .section-divider {
+            width: 80px;
+            height: 4px;
+            border-radius: 2px;
+            background: linear-gradient(90deg, #0ea5e9, #38bdf8, #7dd3fc);
+        }
+
+        /* === BUTTON GLOW === */
+        .btn-glow {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .btn-glow::after {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: inherit;
+            background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+            z-index: -1;
+            filter: blur(12px);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .btn-glow:hover::after {
+            opacity: 0.6;
+        }
+
+        /* === FORM INPUTS === */
+        .form-input {
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        .form-input:focus {
+            border-color: #38bdf8;
+            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+        }
+
+        /* === MOBILE MENU === */
+        .mobile-menu {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease, opacity 0.3s ease;
+            opacity: 0;
+        }
+        .mobile-menu.open {
+            max-height: 400px;
+            opacity: 1;
+        }
+
+        /* === PARTNER CARD === */
+        .partner-icon-wrap {
+            transition: all 0.4s ease;
+        }
+        .partner-icon-wrap:hover .partner-icon-bg {
+            transform: scale(1.1);
+        }
+
+        /* === INTERSECTION OBSERVER REVEAL === */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* === DARK MODE OVERRIDES === */
+        .dark body { background: #06101e; color: #c4e1fb; }
+    </style>
+</head>
+<body class="font-body antialiased bg-navy-50 text-navy-800 dark:bg-navy-950 dark:text-navy-100">
+
+    <!-- ========== NAVIGATION ========== -->
+    <nav id="mainNav" class="bg-white/80 dark:bg-navy-900/80 backdrop-blur-xl sticky top-0 z-50 transition-all duration-300 border-b border-navy-100/50 dark:border-navy-800/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <a href="#accueil" class="flex items-center gap-2">
+                    <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-accent-dark to-accent flex items-center justify-center shadow-lg shadow-accent/20">
+                        <i class="fas fa-cube text-white text-lg"></i>
+                    </div>
+                    <div class="font-heading text-2xl font-extrabold tracking-tight">
+                        <span class="text-accent-dark dark:text-accent">WTG</span>
+                        <span class="text-navy-700 dark:text-navy-200">SARLU</span>
+                    </div>
+                </a>
+                <div class="hidden md:flex items-center gap-1">
+                    <a href="#accueil" class="nav-link px-4 py-2 rounded-lg text-sm font-semibold text-accent-dark dark:text-accent bg-accent/10 dark:bg-accent/10 transition">Accueil</a>
+                    <a href="#services" class="nav-link px-4 py-2 rounded-lg text-sm font-semibold text-navy-600 dark:text-navy-300 hover:text-accent-dark dark:hover:text-accent hover:bg-accent/5 transition">Services</a>
+                    <a href="./formation.html" class="nav-link px-4 py-2 rounded-lg text-sm font-semibold text-navy-600 dark:text-navy-300 hover:text-accent-dark dark:hover:text-accent hover:bg-accent/5 transition">Formations</a>
+                    <a href="#partenariats" class="nav-link px-4 py-2 rounded-lg text-sm font-semibold text-navy-600 dark:text-navy-300 hover:text-accent-dark dark:hover:text-accent hover:bg-accent/5 transition">Partenariats</a>
+                    <a href="./index.html#contact" class="ml-2 px-5 py-2.5 rounded-lg text-sm font-bold text-white bg-gradient-to-r from-accent-dark to-accent hover:shadow-lg hover:shadow-accent/25 transition-all duration-300 hover:-translate-y-0.5">Contact</a>
+                </div>
+                <button id="mobileMenuBtn" class="md:hidden w-10 h-10 rounded-lg bg-navy-100 dark:bg-navy-800 flex items-center justify-center text-navy-600 dark:text-navy-300 hover:bg-accent/10 transition" aria-label="Menu">
+                    <i class="fas fa-bars text-lg"></i>
+                </button>
+            </div>
+            <!-- Mobile Menu -->
+            <div id="mobileMenu" class="mobile-menu md:hidden pb-4">
+                <div class="flex flex-col gap-1">
+                    <a href="./index.html" class="mobile-link px-4 py-3 rounded-lg text-sm font-semibold text-accent-dark dark:text-accent bg-accent/10 transition">Accueil</a>
+                    <a href="#services" class="mobile-link px-4 py-3 rounded-lg text-sm font-semibold text-navy-600 dark:text-navy-300 hover:bg-accent/5 transition">Services</a>
+                    <a href="./formation.html" class="mobile-link px-4 py-3 rounded-lg text-sm font-semibold text-navy-600 dark:text-navy-300 hover:bg-accent/5 transition">Formations</a>
+                    <a href="#partenariats" class="mobile-link px-4 py-3 rounded-lg text-sm font-semibold text-navy-600 dark:text-navy-300 hover:bg-accent/5 transition">Partenariats</a>
+                    <a href="#contact" class="px-4 py-3 rounded-lg text-sm font-bold text-white bg-gradient-to-r from-accent-dark to-accent text-center transition">Contact</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ========== HERO SECTION ========== -->
+    <section 
+        id="accueil" 
+        class="relative min-h-[90vh] flex items-center bg-gradient-to-br from-navy-950 via-navy-900 to-navy-800 overflow-hidden"
+        style="background-image: url(./assets/img/venti-views-1cqIcrWFQBI-unsplash.jpg);background-size: cover; background-position: bottom;"
+    >
+        <!-- Decorative Elements -->
+        <div class="hero-pattern absolute inset-0"></div>
+        <div class="absolute top-20 right-10 w-72 h-72 bg-accent/5 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-20 left-10 w-96 h-96 bg-accent-dark/5 rounded-full blur-3xl"></div>
+        <!-- Grid pattern -->
+        <div class="absolute inset-0 opacity-[0.03]" style="background-image: url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2260%22 height=%2260%22%3E%3Cpath d=%22M60 0H0v60%22 fill=%22none%22 stroke=%22%2338bdf8%22 stroke-width=%220.5%22/%3E%3C/svg%3E');"></div>
+
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28 w-full">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h1 class="animate-fadeInUp delay-100 font-heading text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-[1.1] mb-6">
+                        Optimisez votre
+                        <span class="shimmer-text"> Supply Chain</span>
+                        avec excellence
+                    </h1>
+                    <p class="animate-fadeInUp text-white delay-200 text-lg md:text-xl text-navy-300 mb-10 max-w-xl leading-relaxed">
+                        WTG SARLU transforme votre chaîne d'approvisionnement grâce à des solutions d'entreposage lean et des services logistiques à valeur ajoutée.
+                    </p>
+                    <div class="animate-fadeInUp delay-300 flex flex-col sm:flex-row gap-4">
+                        <a href="#contact" class="btn-glow bg-gradient-to-r from-accent-dark to-accent text-white font-bold py-4 px-8 rounded-xl text-center transition-all duration-300 hover:-translate-y-1 shadow-lg shadow-accent/20 hover:shadow-xl hover:shadow-accent/30">
+                            <i class="fas fa-rocket mr-2"></i>Optimiser ma supply chain
+                        </a>
+                        <a href="#qui-sommes-nous" class="border-2 border-navy-600 hover:border-accent text-navy-200 hover:text-accent font-bold py-4 px-8 rounded-xl text-center transition-all duration-300 hover:-translate-y-1">
+                            <i class="fas fa-play-circle mr-2"></i>Découvrir WTG
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Stats Cards -->
+                <div class="hidden lg:grid grid-cols-2 gap-4">
+                    <div class="animate-fadeInRight delay-200 glass-card rounded-2xl p-6 animate-float">
+                        <div class="w-12 h-12 rounded-xl bg-accent/15 flex items-center justify-center mb-4">
+                            <i class="fas fa-warehouse text-accent text-xl text-white"></i>
+                        </div>
+                        <p class="text-3xl font-heading font-extrabold text-white mb-1">3PL</p>
+                        <p class="text-navy-400 text-sm text-white">Logistique Tierce-Partie</p>
+                    </div>
+                    <div class="animate-fadeInRight delay-400 glass-card rounded-2xl p-6 mt-8" style="animation: float 6s ease-in-out 1s infinite;">
+                        <div class="w-12 h-12 rounded-xl bg-accent/15 flex items-center justify-center mb-4">
+                            <i class="fas fa-chart-line text-accent text-xl text-white"></i>
+                        </div>
+                        <p class="text-3xl font-heading font-extrabold text-white mb-1 text-white">Lean</p>
+                        <p class="text-navy-400 text-sm text-white">Entreposage optimisé</p>
+                    </div>
+                    <div class="animate-fadeInRight delay-500 glass-card rounded-2xl p-6" style="animation: float 6s ease-in-out 2s infinite;">
+                        <div class="w-12 h-12 rounded-xl bg-accent/15 flex items-center justify-center mb-4">
+                            <i class="fas fa-globe-africa text-accent text-xl text-white"></i>
+                        </div>
+                        <p class="text-3xl font-heading font-extrabold text-white mb-1">RDC</p>
+                        <p class="text-navy-400 text-sm text-white">Présence stratégique</p>
+                    </div>
+                    <div class="animate-fadeInRight delay-700 glass-card rounded-2xl p-6 mt-8" style="animation: float 6s ease-in-out 3s infinite;">
+                        <div class="w-12 h-12 rounded-xl bg-accent/15 flex items-center justify-center mb-4">
+                            <i class="fas fa-users text-accent text-xl text-white"></i>
+                        </div>
+                        <p class="text-3xl font-heading font-extrabold text-white mb-1 ">100%</p>
+                        <p class="text-navy-400 text-sm text-white">Engagement client</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Wave Divider -->
+        <div class="absolute bottom-0 left-0 right-0">
+            <svg viewBox="0 0 1440 100" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full">
+                <path d="M0 100L48 90C96 80 192 60 288 50C384 40 480 40 576 45C672 50 768 60 864 62.5C960 65 1056 60 1152 52.5C1248 45 1344 35 1392 30L1440 25V100H0Z" class="fill-white dark:fill-navy-950"/>
+            </svg>
+        </div>
+    </section>
+
+    <!-- ========== ABOUT SECTION ========== -->
+    <section id="qui-sommes-nous" class="py-20 md:py-28 bg-white dark:bg-navy-950">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            <!-- Header -->
+            <div class="text-center mb-16 reveal">
+                <span class="inline-block px-4 py-1.5 rounded-full bg-accent/10 dark:bg-accent/10 text-accent-dark dark:text-accent text-sm font-semibold uppercase tracking-wider mb-4">À propos de nous</span>
+                <h2 class="font-heading text-3xl md:text-5xl font-extrabold text-navy-800 dark:text-white mb-4">
+                    Your Strategic <span class="text-accent-dark dark:text-accent">3PL</span> Partner
+                </h2>
+                <div class="section-divider mx-auto mb-6"></div>
+                <p class="text-navy-500 dark:text-navy-300 max-w-3xl mx-auto text-lg leading-relaxed">
+                    <span class="font-bold text-navy-700 dark:text-white">WTG SARLU</span> est votre partenaire global pour l'optimisation de votre chaîne d'approvisionnement. Nous aidons nos clients à améliorer la performance de leur supply chain et à renforcer leur service client.
+                </p>
+            </div>
+
+            <!-- Purpose / Vision / Approche -->
+            <div class="grid md:grid-cols-3 gap-6 mb-20">
+                <div class="reveal value-card bg-navy-50 dark:bg-navy-900 rounded-2xl p-8 shadow-sm hover:shadow-xl transition-all duration-400 border border-navy-100 dark:border-navy-800">
+                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-accent-dark to-accent flex items-center justify-center mb-6 shadow-lg shadow-accent/20">
+                        <i class="fas fa-bullseye text-white text-xl"></i>
+                    </div>
+                    <h3 class="font-heading text-xl font-bold text-navy-800 dark:text-white mb-3">Notre Purpose</h3>
+                    <p class="text-accent-dark dark:text-accent font-semibold italic mb-3">"Aider nos clients à faire ce qu'ils font... mieux."</p>
+                    <p class="text-sm text-navy-500 dark:text-navy-400">Notre raison d'être est au centre de tout ce que nous faisons.</p>
+                </div>
+
+                <div class="reveal delay-100 value-card bg-navy-50 dark:bg-navy-900 rounded-2xl p-8 shadow-sm hover:shadow-xl transition-all duration-400 border border-navy-100 dark:border-navy-800">
+                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-accent-dark to-accent flex items-center justify-center mb-6 shadow-lg shadow-accent/20">
+                        <i class="fas fa-eye text-white text-xl"></i>
+                    </div>
+                    <h3 class="font-heading text-xl font-bold text-navy-800 dark:text-white mb-3">Notre Vision</h3>
+                    <p class="text-navy-600 dark:text-navy-300">Créer une grande entreprise de 3PL où les opportunités existent, où les gens veulent travailler, et où les clients veulent acheter.</p>
+                </div>
+
+                <div class="reveal delay-200 value-card bg-navy-50 dark:bg-navy-900 rounded-2xl p-8 shadow-sm hover:shadow-xl transition-all duration-400 border border-navy-100 dark:border-navy-800">
+                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-accent-dark to-accent flex items-center justify-center mb-6 shadow-lg shadow-accent/20">
+                        <i class="fas fa-handshake text-white text-xl"></i>
+                    </div>
+                    <h3 class="font-heading text-xl font-bold text-navy-800 dark:text-white mb-3">Notre Approche</h3>
+                    <p class="text-navy-600 dark:text-navy-300">En tant que partenaires logistiques Lean, notre équipe devient une extension de votre entreprise.</p>
+                </div>
+            </div>
+
+            <!-- Pourquoi WTG -->
+            <div class="reveal gradient-border rounded-2xl mb-20">
+                <div class="bg-gradient-to-br from-navy-900 via-navy-800 to-navy-900 text-white rounded-2xl p-8 md:p-12 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-64 h-64 bg-accent/5 rounded-full blur-3xl"></div>
+                    <div class="relative">
+                        <div class="text-center mb-10">
+                            <h3 class="font-heading text-2xl md:text-3xl font-extrabold mb-3">Pourquoi <span class="text-accent">WTG SARLU</span> ?</h3>
+                            <div class="section-divider mx-auto"></div>
+                        </div>
+
+                        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+                            <div class="text-center group">
+                                <div class="w-16 h-16 rounded-2xl bg-accent/15 group-hover:bg-accent/25 flex items-center justify-center mx-auto mb-3 transition-all duration-300 group-hover:scale-110">
+                                    <i class="fas fa-chart-pie text-accent text-xl"></i>
+                                </div>
+                                <h4 class="font-heading font-bold text-sm mb-1">Financial Performance</h4>
+                                <p class="text-xs text-navy-400">Résultats permettant d'investir dans l'amélioration continue</p>
+                            </div>
+                            <div class="text-center group">
+                                <div class="w-16 h-16 rounded-2xl bg-accent/15 group-hover:bg-accent/25 flex items-center justify-center mx-auto mb-3 transition-all duration-300 group-hover:scale-110">
+                                    <i class="fas fa-users text-accent text-xl"></i>
+                                </div>
+                                <h4 class="font-heading font-bold text-sm mb-1">High-Performance Team</h4>
+                                <p class="text-xs text-navy-400">Point de départ critique pour le succès</p>
+                            </div>
+                            <div class="text-center group">
+                                <div class="w-16 h-16 rounded-2xl bg-accent/15 group-hover:bg-accent/25 flex items-center justify-center mx-auto mb-3 transition-all duration-300 group-hover:scale-110">
+                                    <i class="fas fa-cogs text-accent text-xl"></i>
+                                </div>
+                                <h4 class="font-heading font-bold text-sm mb-1">Process Leadership</h4>
+                                <p class="text-xs text-navy-400">Maîtrise des fondamentaux pour répondre aux attentes</p>
+                            </div>
+                            <div class="text-center group">
+                                <div class="w-16 h-16 rounded-2xl bg-accent/15 group-hover:bg-accent/25 flex items-center justify-center mx-auto mb-3 transition-all duration-300 group-hover:scale-110">
+                                    <i class="fas fa-microchip text-accent text-xl"></i>
+                                </div>
+                                <h4 class="font-heading font-bold text-sm mb-1">Advanced Technologies</h4>
+                                <p class="text-xs text-navy-400">Innovation avec les bonnes personnes et processus</p>
+                            </div>
+                            <div class="text-center group col-span-2 md:col-span-1">
+                                <div class="w-16 h-16 rounded-2xl bg-accent/15 group-hover:bg-accent/25 flex items-center justify-center mx-auto mb-3 transition-all duration-300 group-hover:scale-110">
+                                    <i class="fas fa-gem text-accent text-xl"></i>
+                                </div>
+                                <h4 class="font-heading font-bold text-sm mb-1">Quantified Value</h4>
+                                <p class="text-xs text-navy-400">Qualité accrue, coûts réduits, délais optimisés</p>
+                            </div>
+                        </div>
+
+                        <p class="text-center text-sm text-navy-400 mt-8 italic max-w-2xl mx-auto">
+                            "Notre système de management nous permet de remplir notre mission de manière cohérente : vous aider à faire ce que vous faites... mieux."
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Nos Valeurs -->
+            <div class="reveal">
+                <h3 class="font-heading text-2xl md:text-3xl font-extrabold text-navy-800 dark:text-white text-center mb-10">Nos Valeurs Fondatrices</h3>
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
+                    <div class="value-card bg-white dark:bg-navy-900 border border-navy-100 dark:border-navy-800 rounded-xl p-6 shadow-sm hover:shadow-lg transition-all duration-400">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center">
+                                <i class="fas fa-shield-alt text-accent-dark dark:text-accent text-lg"></i>
+                            </div>
+                            <h4 class="font-heading text-lg font-bold text-navy-800 dark:text-white">Safety First</h4>
+                        </div>
+                        <p class="text-navy-500 dark:text-navy-400 text-sm leading-relaxed">Nous avons la responsabilité de veiller les uns sur les autres. Notre objectif est que chaque membre de l'équipe rentre chez lui en sécurité.</p>
+                    </div>
+                    <div class="value-card bg-white dark:bg-navy-900 border border-navy-100 dark:border-navy-800 rounded-xl p-6 shadow-sm hover:shadow-lg transition-all duration-400">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center">
+                                <i class="fas fa-hands-helping text-accent-dark dark:text-accent text-lg"></i>
+                            </div>
+                            <h4 class="font-heading text-lg font-bold text-navy-800 dark:text-white">Servant Leadership</h4>
+                        </div>
+                        <p class="text-navy-500 dark:text-navy-400 text-sm leading-relaxed">Notre travail est de servir nos collègues, nos clients et nos communautés. Nous traitons tout le monde avec respect.</p>
+                    </div>
+                    <div class="value-card bg-white dark:bg-navy-900 border border-navy-100 dark:border-navy-800 rounded-xl p-6 shadow-sm hover:shadow-lg transition-all duration-400">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center">
+                                <i class="fas fa-graduation-cap text-accent-dark dark:text-accent text-lg"></i>
+                            </div>
+                            <h4 class="font-heading text-lg font-bold text-navy-800 dark:text-white">Learning Organization</h4>
+                        </div>
+                        <p class="text-navy-500 dark:text-navy-400 text-sm leading-relaxed">Investir dans l'apprentissage continu est essentiel pour favoriser une culture d'amélioration continue.</p>
+                    </div>
+                    <div class="value-card bg-white dark:bg-navy-900 border border-navy-100 dark:border-navy-800 rounded-xl p-6 shadow-sm hover:shadow-lg transition-all duration-400">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center">
+                                <i class="fas fa-trophy text-accent-dark dark:text-accent text-lg"></i>
+                            </div>
+                            <h4 class="font-heading text-lg font-bold text-navy-800 dark:text-white">Results Matter</h4>
+                        </div>
+                        <p class="text-navy-500 dark:text-navy-400 text-sm leading-relaxed">Nous fixons des standards de performance élevés et nous nous responsabilisons pour atteindre les objectifs.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== SERVICES SECTION ========== -->
+    <section id="services" class="py-20 md:py-28 bg-navy-50 dark:bg-navy-900/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 reveal">
+                <span class="inline-block px-4 py-1.5 rounded-full bg-accent/10 dark:bg-accent/10 text-accent-dark dark:text-accent text-sm font-semibold uppercase tracking-wider mb-4">Nos solutions</span>
+                <h2 class="font-heading text-3xl md:text-5xl font-extrabold text-navy-800 dark:text-white mb-4">Services Logistiques</h2>
+                <div class="section-divider mx-auto mb-6"></div>
+                <p class="text-navy-500 dark:text-navy-300 max-w-2xl mx-auto text-lg">Des solutions Lean, de l'entrepôt à la livraison finale</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Service 1 -->
+                <div class="reveal service-card bg-white dark:bg-navy-900 rounded-2xl shadow-sm border border-navy-100 dark:border-navy-800 overflow-hidden">
+                    <div class="h-44 bg-gradient-to-br from-navy-800 to-navy-600 flex items-center justify-center relative overflow-hidden">
+                        <div class="absolute inset-0 opacity-10" style="background-image: url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2240%22 height=%2240%22%3E%3Ccircle cx=%2220%22 cy=%2220%22 r=%221%22 fill=%22%2338bdf8%22/%3E%3C/svg%3E');"></div>
+                        <i class="fas fa-warehouse text-accent/70 text-6xl relative z-10"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-heading text-xl font-bold text-navy-800 dark:text-white mb-2">Gestion d'Entrepôt</h3>
+                        <p class="text-navy-500 dark:text-navy-400 text-sm leading-relaxed">Réception, stockage, préparation de commandes (picking) et expédition avec traçabilité rigoureuse.</p>
+                    </div>
+                </div>
+
+                <!-- Service 2 -->
+                <div class="reveal delay-100 service-card bg-white dark:bg-navy-900 rounded-2xl shadow-sm border border-navy-100 dark:border-navy-800 overflow-hidden">
+                    <div class="h-44 bg-gradient-to-br from-navy-700 to-navy-500 flex items-center justify-center relative overflow-hidden">
+                        <div class="absolute inset-0 opacity-10" style="background-image: url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2240%22 height=%2240%22%3E%3Ccircle cx=%2220%22 cy=%2220%22 r=%221%22 fill=%22%2338bdf8%22/%3E%3C/svg%3E');"></div>
+                        <i class="fas fa-building text-accent/70 text-6xl relative z-10"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-heading text-xl font-bold text-navy-800 dark:text-white mb-2">Entreposage Multi-Clients</h3>
+                        <p class="text-navy-500 dark:text-navy-400 text-sm leading-relaxed">Capacité et infrastructure évolutives sur des marchés stratégiques pour une flexibilité maximale.</p>
+                    </div>
+                </div>
+
+                <!-- Service 3 -->
+                <div class="reveal delay-200 service-card bg-white dark:bg-navy-900 rounded-2xl shadow-sm border border-navy-100 dark:border-navy-800 overflow-hidden">
+                    <div class="h-44 bg-gradient-to-br from-accent-dark to-navy-600 flex items-center justify-center relative overflow-hidden">
+                        <div class="absolute inset-0 opacity-10" style="background-image: url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2240%22 height=%2240%22%3E%3Ccircle cx=%2220%22 cy=%2220%22 r=%221%22 fill=%22%2338bdf8%22/%3E%3C/svg%3E');"></div>
+                        <i class="fas fa-cogs text-accent-light/70 text-6xl relative z-10"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-heading text-xl font-bold text-navy-800 dark:text-white mb-2">Services à Valeur Ajoutée</h3>
+                        <p class="text-navy-500 dark:text-navy-400 text-sm leading-relaxed">Audits qualité, pick & pack, logistique d'exportation pour les opérations de dernière minute.</p>
+                    </div>
+                </div>
+
+                <!-- Service 4 -->
+                <div class="reveal service-card bg-white dark:bg-navy-900 rounded-2xl shadow-sm border border-navy-100 dark:border-navy-800 overflow-hidden">
+                    <div class="h-44 bg-gradient-to-br from-navy-600 to-accent-dark flex items-center justify-center relative overflow-hidden">
+                        <div class="absolute inset-0 opacity-10" style="background-image: url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2240%22 height=%2240%22%3E%3Ccircle cx=%2220%22 cy=%2220%22 r=%221%22 fill=%22%2338bdf8%22/%3E%3C/svg%3E');"></div>
+                        <i class="fas fa-eye text-accent-light/70 text-6xl relative z-10"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-heading text-xl font-bold text-navy-800 dark:text-white mb-2">Visibilité Supply Chain</h3>
+                        <p class="text-navy-500 dark:text-navy-400 text-sm leading-relaxed">Technologies connectées pour simplifier vos données et obtenir des insights précieux.</p>
+                    </div>
+                </div>
+
+                <!-- Service 5 -->
+                <div class="reveal delay-100 service-card bg-white dark:bg-navy-900 rounded-2xl shadow-sm border border-navy-100 dark:border-navy-800 overflow-hidden">
+                    <div class="h-44 bg-gradient-to-br from-navy-800 to-accent-dark/80 flex items-center justify-center relative overflow-hidden">
+                        <div class="absolute inset-0 opacity-10" style="background-image: url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2240%22 height=%2240%22%3E%3Ccircle cx=%2220%22 cy=%2220%22 r=%221%22 fill=%22%2338bdf8%22/%3E%3C/svg%3E');"></div>
+                        <i class="fas fa-chart-bar text-accent/70 text-6xl relative z-10"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-heading text-xl font-bold text-navy-800 dark:text-white mb-2">Data Analytics & Reporting</h3>
+                        <p class="text-navy-500 dark:text-navy-400 text-sm leading-relaxed">Indicateurs de performance et rapports détaillés pour la prise de décision stratégique.</p>
+                    </div>
+                </div>
+
+                <!-- Service 6 -->
+                <div class="reveal delay-200 service-card bg-white dark:bg-navy-900 rounded-2xl shadow-sm border border-navy-100 dark:border-navy-800 overflow-hidden">
+                    <div class="h-44 bg-gradient-to-br from-navy-700 to-navy-900 flex items-center justify-center relative overflow-hidden">
+                        <div class="absolute inset-0 opacity-10" style="background-image: url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2240%22 height=%2240%22%3E%3Ccircle cx=%2220%22 cy=%2220%22 r=%221%22 fill=%22%2338bdf8%22/%3E%3C/svg%3E');"></div>
+                        <i class="fas fa-clipboard-list text-accent/70 text-6xl relative z-10"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-heading text-xl font-bold text-navy-800 dark:text-white mb-2">Fixed Asset Inventory</h3>
+                        <p class="text-navy-500 dark:text-navy-400 text-sm leading-relaxed">Services d'inventaire physique pour vérifier l'existence, l'état et la localisation des actifs fixes.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== FORMATIONS SECTION ========== -->
+    <section id="formations" class="py-20 md:py-28 bg-white dark:bg-navy-950">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div class="reveal">
+                    <span class="inline-block px-4 py-1.5 rounded-full bg-accent/10 text-accent-dark dark:text-accent text-sm font-semibold uppercase tracking-wider mb-4">Formation</span>
+                    <h2 class="font-heading text-3xl md:text-4xl font-extrabold text-navy-800 dark:text-white mb-4">L'Académie WTG</h2>
+                    <div class="section-divider mb-6"></div>
+                    <p class="text-navy-500 dark:text-navy-300 text-lg mb-8 leading-relaxed">
+                        Parce que nous sommes une <span class="font-bold text-navy-700 dark:text-white">"organisation apprenante"</span>, nous partageons notre expertise à travers des programmes de formation concrets.
+                    </p>
+
+                    <div class="space-y-5 mb-10">
+                        <div class="flex items-start gap-4 group">
+                            <div class="w-8 h-8 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0 mt-0.5 group-hover:bg-accent/20 transition">
+                                <i class="fas fa-check text-accent-dark dark:text-accent text-sm"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-heading font-bold text-navy-800 dark:text-white">Fundamentals of Warehouse Management</h4>
+                                <p class="text-navy-500 dark:text-navy-400 text-sm">Maîtrisez la réception, le stockage optimisé, la préparation de commandes et les inventaires.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4 group">
+                            <div class="w-8 h-8 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0 mt-0.5 group-hover:bg-accent/20 transition">
+                                <i class="fas fa-check text-accent-dark dark:text-accent text-sm"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-heading font-bold text-navy-800 dark:text-white">QHSE en Logistique</h4>
+                                <p class="text-navy-500 dark:text-navy-400 text-sm">Identifiez les risques et créez un environnement de travail physiquement et émotionnellement sûr.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4 group">
+                            <div class="w-8 h-8 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0 mt-0.5 group-hover:bg-accent/20 transition">
+                                <i class="fas fa-check text-accent-dark dark:text-accent text-sm"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-heading font-bold text-navy-800 dark:text-white">Supply Chain Visibility & Data Analytics</h4>
+                                <p class="text-navy-500 dark:text-navy-400 text-sm">Exploitez les données de votre supply chain pour des décisions stratégiques éclairées.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row gap-3">
+                        <a href="./formation.html" class="bg-gradient-to-r from-accent-dark to-accent text-white font-bold py-3 px-6 rounded-xl text-center hover:shadow-lg hover:shadow-accent/25 transition-all duration-300 hover:-translate-y-1 text-sm">
+                            <i class="fas fa-graduation-cap mr-2"></i>Voir toutes nos formations
+                        </a>
+                        <a href="./assets/res/catalogue.pdf" class="border-2 border-navy-200 dark:border-navy-700 text-navy-700 dark:text-navy-200 hover:border-accent dark:hover:border-accent hover:text-accent-dark dark:hover:text-accent font-bold py-3 px-6 rounded-xl text-center transition-all duration-300 text-sm">
+                            <i class="fas fa-download mr-2"></i>Télécharger le catalogue
+                        </a>
+                    </div>
+                </div>
+
+                <div class="reveal grid grid-cols-2 gap-4">
+                    <div class="bg-gradient-to-br from-navy-800 to-navy-700 text-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                        <div class="w-10 h-10 rounded-xl bg-accent/15 flex items-center justify-center mb-4">
+                            <i class="fas fa-users text-accent text-lg"></i>
+                        </div>
+                        <p class="text-xs text-navy-400 mb-1">Public cible</p>
+                        <p class="font-heading font-bold text-sm">Équipes logistiques, superviseurs</p>
+                    </div>
+                    <div class="bg-gradient-to-br from-accent-dark to-accent text-white p-6 rounded-2xl shadow-lg shadow-accent/20 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                        <div class="w-10 h-10 rounded-xl bg-white/15 flex items-center justify-center mb-4">
+                            <i class="fas fa-map-marker-alt text-white text-lg"></i>
+                        </div>
+                        <p class="text-xs text-accent-light/80 mb-1">Format</p>
+                        <p class="font-heading font-bold text-sm">Intra-entreprise ou en nos locaux</p>
+                    </div>
+                    <div class="bg-gradient-to-br from-accent to-accent-dark text-white p-6 rounded-2xl shadow-lg shadow-accent/20 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                        <div class="w-10 h-10 rounded-xl bg-white/15 flex items-center justify-center mb-4">
+                            <i class="fas fa-clock text-white text-lg"></i>
+                        </div>
+                        <p class="text-xs text-accent-light/80 mb-1">Durée</p>
+                        <p class="font-heading font-bold text-sm">2 à 3 jours</p>
+                    </div>
+                    <div class="bg-gradient-to-br from-navy-700 to-navy-800 text-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                        <div class="w-10 h-10 rounded-xl bg-accent/15 flex items-center justify-center mb-4">
+                            <i class="fas fa-certificate text-accent text-lg"></i>
+                        </div>
+                        <p class="text-xs text-navy-400 mb-1">Certification</p>
+                        <p class="font-heading font-bold text-sm">Attestation de formation</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== PARTENARIATS SECTION ========== -->
+    <section id="partenariats" class="py-20 md:py-28 bg-navy-50 dark:bg-navy-900/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 reveal">
+                <span class="inline-block px-4 py-1.5 rounded-full bg-accent/10 text-accent-dark dark:text-accent text-sm font-semibold uppercase tracking-wider mb-4">Collaboration</span>
+                <h2 class="font-heading text-3xl md:text-5xl font-extrabold text-navy-800 dark:text-white mb-4">Partenariats & Sous-traitance</h2>
+                <div class="section-divider mx-auto mb-6"></div>
+                <p class="text-navy-500 dark:text-navy-300 max-w-2xl mx-auto text-lg">La force d'une chaîne logistique réside dans la qualité de ses maillons.</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6 mb-14">
+                <div class="reveal partner-icon-wrap bg-white dark:bg-navy-900 p-8 rounded-2xl shadow-sm border border-navy-100 dark:border-navy-800 text-center hover:shadow-xl transition-all duration-400 hover:-translate-y-2">
+                    <div class="partner-icon-bg w-20 h-20 rounded-2xl bg-gradient-to-br from-accent-dark to-accent flex items-center justify-center mx-auto mb-5 shadow-lg shadow-accent/20 transition-transform">
+                        <i class="fas fa-truck text-white text-3xl"></i>
+                    </div>
+                    <h3 class="font-heading text-xl font-bold text-navy-800 dark:text-white mb-2">Transporteurs indépendants</h3>
+                    <p class="text-navy-500 dark:text-navy-400 text-sm">Flottes de camions conformes et assurées</p>
+                </div>
+                <div class="reveal delay-100 partner-icon-wrap bg-white dark:bg-navy-900 p-8 rounded-2xl shadow-sm border border-navy-100 dark:border-navy-800 text-center hover:shadow-xl transition-all duration-400 hover:-translate-y-2">
+                    <div class="partner-icon-bg w-20 h-20 rounded-2xl bg-gradient-to-br from-accent-dark to-accent flex items-center justify-center mx-auto mb-5 shadow-lg shadow-accent/20 transition-transform">
+                        <i class="fas fa-warehouse text-white text-3xl"></i>
+                    </div>
+                    <h3 class="font-heading text-xl font-bold text-navy-800 dark:text-white mb-2">Propriétaires d'entrepôts</h3>
+                    <p class="text-navy-500 dark:text-navy-400 text-sm">Espaces de stockage ou entrepôts de transit</p>
+                </div>
+                <div class="reveal delay-200 partner-icon-wrap bg-white dark:bg-navy-900 p-8 rounded-2xl shadow-sm border border-navy-100 dark:border-navy-800 text-center hover:shadow-xl transition-all duration-400 hover:-translate-y-2">
+                    <div class="partner-icon-bg w-20 h-20 rounded-2xl bg-gradient-to-br from-accent-dark to-accent flex items-center justify-center mx-auto mb-5 shadow-lg shadow-accent/20 transition-transform">
+                        <i class="fas fa-boxes text-white text-3xl"></i>
+                    </div>
+                    <h3 class="font-heading text-xl font-bold text-navy-800 dark:text-white mb-2">Prestataires de manutention</h3>
+                    <p class="text-navy-500 dark:text-navy-400 text-sm">Spécialistes de l'emballage et de la manutention</p>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6 reveal">
+                <div class="bg-white dark:bg-navy-900 p-8 rounded-2xl shadow-sm border border-navy-100 dark:border-navy-800 hover:shadow-lg transition">
+                    <h3 class="font-heading text-xl font-bold text-navy-800 dark:text-white mb-6 flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center">
+                            <i class="fas fa-check-circle text-accent-dark dark:text-accent"></i>
+                        </div>
+                        Ce que nous attendons
+                    </h3>
+                    <ul class="space-y-4">
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-shield-alt text-accent-dark dark:text-accent mt-1"></i>
+                            <span class="text-navy-600 dark:text-navy-300 text-sm"><strong class="text-navy-800 dark:text-white">Safety First :</strong> Engagement total envers les règles de sécurité</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-clock text-accent-dark dark:text-accent mt-1"></i>
+                            <span class="text-navy-600 dark:text-navy-300 text-sm"><strong class="text-navy-800 dark:text-white">Fiabilité :</strong> Respect strict des plannings et des engagements</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-handshake text-accent-dark dark:text-accent mt-1"></i>
+                            <span class="text-navy-600 dark:text-navy-300 text-sm"><strong class="text-navy-800 dark:text-white">Professionnalisme :</strong> Communication fluide et transparence totale</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="bg-gradient-to-br from-navy-800 to-navy-900 text-white p-8 rounded-2xl shadow-lg relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-40 h-40 bg-accent/5 rounded-full blur-2xl"></div>
+                    <div class="relative">
+                        <h3 class="font-heading text-xl font-bold mb-6 flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-accent/15 flex items-center justify-center">
+                                <i class="fas fa-gift text-accent"></i>
+                            </div>
+                            Ce que nous offrons
+                        </h3>
+                        <ul class="space-y-4">
+                            <li class="flex items-start gap-3">
+                                <i class="fas fa-chart-line text-accent mt-1"></i>
+                                <span class="text-navy-200 text-sm">Un volume d'affaires régulier</span>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <i class="fas fa-calendar-check text-accent mt-1"></i>
+                                <span class="text-navy-200 text-sm">Des Business Reviews régulières</span>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <i class="fas fa-coins text-accent mt-1"></i>
+                                <span class="text-navy-200 text-sm">Des conditions de paiement claires et respectées</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-12 reveal">
+                <a href="#contact" class="inline-flex items-center gap-2 bg-gradient-to-r from-accent-dark to-accent text-white font-bold py-3.5 px-8 rounded-xl hover:shadow-lg hover:shadow-accent/25 transition-all duration-300 hover:-translate-y-1">
+                    <i class="fas fa-handshake"></i>Devenir partenaire
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== CONTACT SECTION ========== -->
+    <section id="contact" class="py-20 md:py-28 bg-white dark:bg-navy-950">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 reveal">
+                <span class="inline-block px-4 py-1.5 rounded-full bg-accent/10 text-accent-dark dark:text-accent text-sm font-semibold uppercase tracking-wider mb-4">Contact</span>
+                <h2 class="font-heading text-3xl md:text-5xl font-extrabold text-navy-800 dark:text-white mb-4">Contactez-nous</h2>
+                <div class="section-divider mx-auto mb-6"></div>
+                <p class="text-navy-500 dark:text-navy-300 max-w-2xl mx-auto text-lg">Prêt à optimiser votre logistique ? Notre équipe est à votre écoute.</p>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-10">
+                <!-- Coordonnées -->
+                <div class="reveal">
+                    <div class="bg-navy-50 dark:bg-navy-900 rounded-2xl p-8 space-y-6 border border-navy-100 dark:border-navy-800">
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-accent-dark to-accent flex items-center justify-center flex-shrink-0 shadow-lg shadow-accent/20">
+                                <i class="fas fa-map-marker-alt text-white"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-heading font-bold text-navy-800 dark:text-white">Adresse</h4>
+                                <p class="text-navy-500 dark:text-navy-400 text-sm">36 Av. Dilungu, Q/Biashara<br>C/Dilala - Lualaba, République Démocratique du Congo</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-accent-dark to-accent flex items-center justify-center flex-shrink-0 shadow-lg shadow-accent/20">
+                                <i class="fas fa-phone-alt text-white"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-heading font-bold text-navy-800 dark:text-white">Téléphone</h4>
+                                <p class="text-navy-500 dark:text-navy-400 text-sm">+243 817 005 764<br>+243 821 781 810</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-accent-dark to-accent flex items-center justify-center flex-shrink-0 shadow-lg shadow-accent/20">
+                                <i class="fas fa-envelope text-white"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-heading font-bold text-navy-800 dark:text-white">Email</h4>
+                                <p class="text-navy-500 dark:text-navy-400 text-sm">info@wtgsarlu.com</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-accent-dark to-accent flex items-center justify-center flex-shrink-0 shadow-lg shadow-accent/20">
+                                <i class="fas fa-clock text-white"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-heading font-bold text-navy-800 dark:text-white">Horaires</h4>
+                                <p class="text-navy-500 dark:text-navy-400 text-sm">Lundi - Vendredi : 08h00 - 17h00</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-accent-dark to-accent flex items-center justify-center flex-shrink-0 shadow-lg shadow-accent/20">
+                                <i class="fas fa-id-card text-white"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-heading font-bold text-navy-800 dark:text-white">Identification</h4>
+                                <p class="text-navy-500 dark:text-navy-400 text-sm">Id Nat: 6-910-N71757N<br>RCCM: CD/LSH/RCCM/16-B-03995</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Social -->
+                    <div class="mt-6 flex gap-3 justify-center lg:justify-start">
+                        <a href="#" class="w-11 h-11 rounded-xl bg-navy-100 dark:bg-navy-800 text-navy-600 dark:text-navy-300 flex items-center justify-center hover:bg-accent hover:text-white dark:hover:bg-accent transition-all duration-300"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="w-11 h-11 rounded-xl bg-navy-100 dark:bg-navy-800 text-navy-600 dark:text-navy-300 flex items-center justify-center hover:bg-accent hover:text-white dark:hover:bg-accent transition-all duration-300"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="w-11 h-11 rounded-xl bg-navy-100 dark:bg-navy-800 text-navy-600 dark:text-navy-300 flex items-center justify-center hover:bg-accent hover:text-white dark:hover:bg-accent transition-all duration-300"><i class="fab fa-whatsapp"></i></a>
+                        <a href="#" class="w-11 h-11 rounded-xl bg-navy-100 dark:bg-navy-800 text-navy-600 dark:text-navy-300 flex items-center justify-center hover:bg-accent hover:text-white dark:hover:bg-accent transition-all duration-300"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+
+                <!-- Formulaire -->
+                <div class="reveal bg-navy-50 dark:bg-navy-900 rounded-2xl p-8 border border-navy-100 dark:border-navy-800">
+                    <h3 class="font-heading text-xl font-bold text-navy-800 dark:text-white mb-6">Envoyez-nous un message</h3>
+                    <form id="contactForm" onsubmit="return handleFormSubmit(event)">
+                        <div class="grid md:grid-cols-2 gap-4 mb-4">
+                            <input type="text" placeholder="Nom complet" class="form-input w-full px-4 py-3.5 bg-white dark:bg-navy-800 border border-navy-200 dark:border-navy-700 rounded-xl text-navy-800 dark:text-navy-100 placeholder-navy-400 dark:placeholder-navy-500 focus:outline-none">
+                            <input type="text" placeholder="Entreprise" class="form-input w-full px-4 py-3.5 bg-white dark:bg-navy-800 border border-navy-200 dark:border-navy-700 rounded-xl text-navy-800 dark:text-navy-100 placeholder-navy-400 dark:placeholder-navy-500 focus:outline-none">
+                        </div>
+                        <div class="grid md:grid-cols-2 gap-4 mb-4">
+                            <input type="email" placeholder="Email" class="form-input w-full px-4 py-3.5 bg-white dark:bg-navy-800 border border-navy-200 dark:border-navy-700 rounded-xl text-navy-800 dark:text-navy-100 placeholder-navy-400 dark:placeholder-navy-500 focus:outline-none">
+                            <input type="tel" placeholder="Téléphone" class="form-input w-full px-4 py-3.5 bg-white dark:bg-navy-800 border border-navy-200 dark:border-navy-700 rounded-xl text-navy-800 dark:text-navy-100 placeholder-navy-400 dark:placeholder-navy-500 focus:outline-none">
+                        </div>
+                        <select class="form-input w-full px-4 py-3.5 bg-white dark:bg-navy-800 border border-navy-200 dark:border-navy-700 rounded-xl mb-4 text-navy-800 dark:text-navy-100 focus:outline-none">
+                            <option value="">Sélectionnez l'objet de votre demande</option>
+                            <option value="devis">Demande de devis logistique (3PL)</option>
+                            <option value="formation">Renseignement sur les formations (Académie)</option>
+                            <option value="partenariat">Candidature Partenariat / Sous-traitance</option>
+                            <option value="autre">Autre demande</option>
+                        </select>
+                        <textarea rows="4" placeholder="Votre message" class="form-input w-full px-4 py-3.5 bg-white dark:bg-navy-800 border border-navy-200 dark:border-navy-700 rounded-xl mb-4 text-navy-800 dark:text-navy-100 placeholder-navy-400 dark:placeholder-navy-500 focus:outline-none resize-none"></textarea>
+                        <button type="submit" class="w-full bg-gradient-to-r from-accent-dark to-accent text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-accent/25 hover:-translate-y-0.5">
+                            <i class="fas fa-paper-plane mr-2"></i>Envoyer la demande
+                        </button>
+                    </form>
+                    <div id="formMessage" class="hidden mt-4 p-4 rounded-xl text-center font-semibold text-sm"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== FOOTER ========== -->
+    <footer class="bg-navy-950 text-white pt-16 pb-8 relative overflow-hidden">
+        <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent/30 to-transparent"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+                <div>
+                    <div class="flex items-center gap-2 mb-4">
+                        <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-accent-dark to-accent flex items-center justify-center">
+                            <i class="fas fa-cube text-white text-sm"></i>
+                        </div>
+                        <span class="font-heading text-xl font-extrabold">
+                            <span class="text-accent">WTG</span> SARLU
+                        </span>
+                    </div>
+                    <p class="text-navy-400 text-sm leading-relaxed">Your Strategic Third-Party Logistics Partner</p>
+                </div>
+                <div>
+                    <h4 class="font-heading font-bold text-sm uppercase tracking-wider text-accent mb-4">Contact</h4>
+                    <div class="space-y-2 text-navy-400 text-sm">
+                        <p><i class="fas fa-phone mr-2 text-accent/50"></i>+243 817 005 764</p>
+                        <p><i class="fas fa-envelope mr-2 text-accent/50"></i>info@wtgsarlu.com</p>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-heading font-bold text-sm uppercase tracking-wider text-accent mb-4">Adresse</h4>
+                    <p class="text-navy-400 text-sm leading-relaxed">36 Av. Dilungu, Q/Biashara<br>C/Dilala - Lualaba, RDC</p>
+                </div>
+                <div>
+                    <h4 class="font-heading font-bold text-sm uppercase tracking-wider text-accent mb-4">Identification</h4>
+                    <p class="text-navy-400 text-sm leading-relaxed">Id Nat: 6-910-N71757N<br>RCCM: CD/LSH/RCCM/16-B-03995</p>
+                </div>
+            </div>
+            <div class="border-t border-navy-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-navy-500 text-sm">&copy; 2024 WTG SARLU - Tous droits réservés</p>
+                <div class="flex gap-3">
+                    <a href="#" class="w-9 h-9 rounded-lg bg-navy-800 text-navy-400 flex items-center justify-center hover:bg-accent hover:text-white transition-all duration-300 text-sm"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#" class="w-9 h-9 rounded-lg bg-navy-800 text-navy-400 flex items-center justify-center hover:bg-accent hover:text-white transition-all duration-300 text-sm"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="w-9 h-9 rounded-lg bg-navy-800 text-navy-400 flex items-center justify-center hover:bg-accent hover:text-white transition-all duration-300 text-sm"><i class="fab fa-whatsapp"></i></a>
+                    <a href="#" class="w-9 h-9 rounded-lg bg-navy-800 text-navy-400 flex items-center justify-center hover:bg-accent hover:text-white transition-all duration-300 text-sm"><i class="fab fa-twitter"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ========== SCRIPTS ========== -->
+    <script>
+        // Dark mode detection
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+        }
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(event) {
+            if (event.matches) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        });
+
+        // Mobile menu toggle
+        var mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        var mobileMenu = document.getElementById('mobileMenu');
+        var menuIcon = mobileMenuBtn.querySelector('i');
+
+        mobileMenuBtn.addEventListener('click', function() {
+            mobileMenu.classList.toggle('open');
+            if (mobileMenu.classList.contains('open')) {
+                menuIcon.classList.remove('fa-bars');
+                menuIcon.classList.add('fa-times');
+            } else {
+                menuIcon.classList.remove('fa-times');
+                menuIcon.classList.add('fa-bars');
+            }
+        });
+
+        // Close mobile menu on link click
+        document.querySelectorAll('#mobileMenu a').forEach(function(link) {
+            link.addEventListener('click', function() {
+                mobileMenu.classList.remove('open');
+                menuIcon.classList.remove('fa-times');
+                menuIcon.classList.add('fa-bars');
+            });
+        });
+
+        // Nav scroll effect
+        var nav = document.getElementById('mainNav');
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 50) {
+                nav.classList.add('nav-scrolled');
+            } else {
+                nav.classList.remove('nav-scrolled');
+            }
+        });
+
+        // Active nav link on scroll
+        var sections = document.querySelectorAll('section[id]');
+        var navLinks = document.querySelectorAll('.nav-link');
+        var mobileLinks = document.querySelectorAll('.mobile-link');
+
+        function updateActiveNav() {
+            var scrollY = window.scrollY + 100;
+            sections.forEach(function(section) {
+                var sectionTop = section.offsetTop;
+                var sectionHeight = section.offsetHeight;
+                var sectionId = section.getAttribute('id');
+
+                if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
+                    navLinks.forEach(function(link) {
+                        link.classList.remove('text-accent-dark', 'dark:text-accent', 'bg-accent/10', 'dark:bg-accent/10');
+                        link.classList.add('text-navy-600', 'dark:text-navy-300');
+                        if (link.getAttribute('href') === '#' + sectionId ||
+                            (sectionId === 'qui-sommes-nous' && link.getAttribute('href') === '#accueil')) {
+                            // keep accueil active for about section too
+                        }
+                    });
+                    mobileLinks.forEach(function(link) {
+                        link.classList.remove('text-accent-dark', 'dark:text-accent', 'bg-accent/10');
+                        if (link.getAttribute('href') === '#' + sectionId) {
+                            link.classList.add('text-accent-dark', 'dark:text-accent', 'bg-accent/10');
+                        }
+                    });
+                }
+            });
+        }
+        window.addEventListener('scroll', updateActiveNav);
+
+        // Intersection Observer for reveal animations
+        var revealElements = document.querySelectorAll('.reveal');
+        var revealObserver = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        });
+
+        revealElements.forEach(function(el) {
+            revealObserver.observe(el);
+        });
+
+        // Form submission handler
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            var msgEl = document.getElementById('formMessage');
+            msgEl.classList.remove('hidden');
+            msgEl.className = 'mt-4 p-4 rounded-xl text-center font-semibold text-sm bg-accent/10 text-accent-dark dark:text-accent border border-accent/20';
+            msgEl.textContent = 'Merci pour votre message ! Notre équipe vous contactera dans les plus brefs délais.';
+
+            setTimeout(function() {
+                msgEl.classList.add('hidden');
+            }, 5000);
+
+            e.target.reset();
+            return false;
+        }
+    </script>
+</body>
+</html>

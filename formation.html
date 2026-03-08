@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WTG SARLU - Institut Fortunatus | Formations Logistique Minière</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        heading: ['"Bricolage Grotesque"', 'sans-serif'],
+                        body: ['"DM Sans"', 'sans-serif'],
+                    },
+                    colors: {
+                        navy: {
+                            950: '#06101e',
+                            900: '#0b1a30',
+                            800: '#0f2440',
+                            700: '#163356',
+                            600: '#1e4570',
+                            500: '#2a5a8f',
+                            400: '#3b7cc4',
+                            300: '#5ca0e6',
+                            200: '#8fc3f5',
+                            100: '#c4e1fb',
+                            50: '#e8f3fe',
+                        },
+                        accent: {
+                            DEFAULT: '#38bdf8',
+                            light: '#7dd3fc',
+                            dark: '#0ea5e9',
+                            glow: '#38bdf840',
+                        },
+                    },
+                },
+            },
+        };
+    </script>
+    <style>
+        html { scroll-behavior: smooth; }
+        body { font-family: 'DM Sans', sans-serif; }
+        h1, h2, h3, h4, h5 { font-family: 'Bricolage Grotesque', sans-serif; }
+
+        /* === ANIMATIONS === */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes shimmer {
+            0% { background-position: -200% center; }
+            100% { background-position: 200% center; }
+        }
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        @keyframes modalSlideIn {
+            from { transform: translateY(-30px) scale(0.97); opacity: 0; }
+            to { transform: translateY(0) scale(1); opacity: 1; }
+        }
+        @keyframes overlayFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        .animate-fadeInUp { animation: fadeInUp 0.7s ease-out both; }
+        .delay-100 { animation-delay: 0.1s; }
+        .delay-200 { animation-delay: 0.2s; }
+        .delay-300 { animation-delay: 0.3s; }
+
+        /* === SHIMMER TEXT === */
+        .shimmer-text {
+            background: linear-gradient(90deg, #38bdf8, #7dd3fc, #e0f2fe, #7dd3fc, #38bdf8);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shimmer 4s linear infinite;
+        }
+
+        /* === SECTION DIVIDER === */
+        .section-divider {
+            width: 80px;
+            height: 4px;
+            border-radius: 2px;
+            background: linear-gradient(90deg, #0ea5e9, #38bdf8, #7dd3fc);
+        }
+
+        /* === NAV === */
+        .nav-scrolled {
+            box-shadow: 0 4px 30px rgba(6, 16, 30, 0.12);
+        }
+
+        /* === MOBILE MENU === */
+        .mobile-menu {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease, opacity 0.3s ease;
+            opacity: 0;
+        }
+        .mobile-menu.open {
+            max-height: 400px;
+            opacity: 1;
+        }
+
+        /* === FORMATION CARD === */
+        .formation-card {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+
+        .formation-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 40px -8px rgba(14, 165, 233, 0.15);
+        }
+        .formation-card:hover::before {
+            width: 6px;
+        }
+        .formation-card.cat-operationnel::before { background: linear-gradient(180deg, #22c55e, #16a34a); }
+        .formation-card.cat-technique::before { background: linear-gradient(180deg, #38bdf8, #0ea5e9); }
+        .formation-card.cat-specialise::before { background: linear-gradient(180deg, #a78bfa, #7c3aed); }
+        .formation-card.cat-transversal::before { background: linear-gradient(180deg, #34d399, #059669); }
+        .formation-card.cat-reglementaire::before { background: linear-gradient(180deg, #f87171, #dc2626); }
+
+        /* === BADGE COLORS === */
+        .badge-operationnel { background: rgba(34,197,94,0.1); color: #16a34a; }
+        .dark .badge-operationnel { background: rgba(34,197,94,0.15); color: #4ade80; }
+        .badge-technique { background: rgba(56,189,248,0.1); color: #0ea5e9; }
+        .dark .badge-technique { background: rgba(56,189,248,0.15); color: #7dd3fc; }
+        .badge-specialise { background: rgba(167,139,250,0.1); color: #7c3aed; }
+        .dark .badge-specialise { background: rgba(167,139,250,0.15); color: #a78bfa; }
+        .badge-transversal { background: rgba(52,211,153,0.1); color: #059669; }
+        .dark .badge-transversal { background: rgba(52,211,153,0.15); color: #34d399; }
+        .badge-reglementaire { background: rgba(248,113,113,0.1); color: #dc2626; }
+        .dark .badge-reglementaire { background: rgba(248,113,113,0.15); color: #f87171; }
+
+        /* === FILTER BUTTON === */
+        .filter-btn {
+            transition: all 0.25s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .filter-btn.active {
+            background: linear-gradient(135deg, #0ea5e9, #38bdf8) !important;
+            color: white !important;
+            box-shadow: 0 4px 15px -3px rgba(14, 165, 233, 0.35);
+        }
+        .filter-btn:not(.active):hover {
+            background-color: rgba(56, 189, 248, 0.08);
+            color: #0ea5e9;
+        }
+
+        /* === MODAL === */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(6, 16, 30, 0.75);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+            animation: overlayFadeIn 0.2s ease;
+        }
+        .modal-content {
+            border-radius: 1.25rem;
+            max-width: 520px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: modalSlideIn 0.3s ease;
+            box-shadow: 0 25px 60px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        /* === FORM INPUTS === */
+        .form-input {
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        .form-input:focus {
+            border-color: #38bdf8;
+            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+        }
+
+        /* === REVEAL ON SCROLL === */
+        .reveal {
+            opacity: 0;
+            transform: translateY(25px);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* === HERO PATTERN === */
+        .hero-pattern {
+            background-image:
+                radial-gradient(ellipse 80% 50% at 50% 0%, rgba(56, 189, 248, 0.12), transparent),
+                radial-gradient(ellipse 40% 40% at 80% 30%, rgba(14, 165, 233, 0.08), transparent);
+        }
+
+        /* === GRADIENT BORDER === */
+        .gradient-border-bottom {
+            position: relative;
+        }
+        .gradient-border-bottom::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(56,189,248,0.3), transparent);
+        }
+
+        /* === SECTION TRANSITION === */
+        [data-category] {
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+        [data-category].section-hidden {
+            display: none;
+        }
+
+        /* === SCROLLBAR === */
+        .modal-content::-webkit-scrollbar { width: 6px; }
+        .modal-content::-webkit-scrollbar-track { background: transparent; }
+        .modal-content::-webkit-scrollbar-thumb { background: rgba(56,189,248,0.3); border-radius: 3px; }
+
+        .dark body { background: #06101e; }
+    </style>
+</head>
+<body class="font-body antialiased bg-navy-50 text-navy-800 dark:bg-navy-950 dark:text-navy-100">
+
+    <!-- ========== NAVIGATION ========== -->
+    <nav id="mainNav" class="bg-white/80 dark:bg-navy-900/80 backdrop-blur-xl sticky top-0 z-50 transition-all duration-300 border-b border-navy-100/50 dark:border-navy-800/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <a href="#" class="flex items-center gap-2">
+                    <div class="w-10 h-10 rounded-lg  flex items-center justify-center flex-row">
+                        <img src="./assets/img/icon.png"/>
+                    </div>
+                    <div class="font-heading text-2xl font-extrabold tracking-tight">
+                        <span class="text-accent-dark dark:text-accent">WTG</span>
+                        <span class="text-navy-700 dark:text-navy-200">SARLU</span>
+                    </div>
+                </a>
+                <div class="hidden md:flex items-center gap-1">
+                    <a href="#" class="px-4 py-2 rounded-lg text-sm font-semibold text-navy-600 dark:text-navy-300 hover:text-accent-dark dark:hover:text-accent hover:bg-accent/5 transition">Accueil</a>
+                    <a href="#" class="px-4 py-2 rounded-lg text-sm font-semibold text-navy-600 dark:text-navy-300 hover:text-accent-dark dark:hover:text-accent hover:bg-accent/5 transition">Services</a>
+                    <a href="./formation.html" class="px-4 py-2 rounded-lg text-sm font-semibold text-accent-dark dark:text-accent bg-accent/10 dark:bg-accent/10 transition">Formations</a>
+                    <a href="#" class="px-4 py-2 rounded-lg text-sm font-semibold text-navy-600 dark:text-navy-300 hover:text-accent-dark dark:hover:text-accent hover:bg-accent/5 transition">Partenariats</a>
+                    <a href="./index.html#contact" class="ml-2 px-5 py-2.5 rounded-lg text-sm font-bold text-white bg-gradient-to-r from-accent-dark to-accent hover:shadow-lg hover:shadow-accent/25 transition-all duration-300 hover:-translate-y-0.5">Contact</a>
+                </div>
+                <button id="mobileMenuBtn" class="md:hidden w-10 h-10 rounded-lg bg-navy-100 dark:bg-navy-800 flex items-center justify-center text-navy-600 dark:text-navy-300 hover:bg-accent/10 transition" aria-label="Menu">
+                    <i class="fas fa-bars text-lg"></i>
+                </button>
+            </div>
+            <div id="mobileMenu" class="mobile-menu md:hidden pb-4">
+                <div class="flex flex-col gap-1">
+                    <a href="#" class="px-4 py-3 rounded-lg text-sm font-semibold text-navy-600 dark:text-navy-300 hover:bg-accent/5 transition">Accueil</a>
+                    <a href="#" class="px-4 py-3 rounded-lg text-sm font-semibold text-navy-600 dark:text-navy-300 hover:bg-accent/5 transition">Services</a>
+                    <a href="./formation.html" class="px-4 py-3 rounded-lg text-sm font-semibold text-accent-dark dark:text-accent bg-accent/10 transition">Formations</a>
+                    <a href="#" class="px-4 py-3 rounded-lg text-sm font-semibold text-navy-600 dark:text-navy-300 hover:bg-accent/5 transition">Partenariats</a>
+                    <a href="./index.html#contact" class="px-4 py-3 rounded-lg text-sm font-bold text-white bg-gradient-to-r from-accent-dark to-accent text-center transition">Contact</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ========== HERO HEADER ========== -->
+    <section 
+
+        class="relative bg-gradient-to-br from-navy-150 via-navy-250 to-navy-350 text-white overflow-hidden"
+        style="background-image: url(./assets/img/the-climate-reality-project-Hb6uWq0i4MI-unsplash.jpg);background-size: cover; background-position: top"
+    >
+        <div class="hero-pattern absolute inset-0"></div>
+        <div class="absolute top-10 right-0 w-80 h-80 bg-accent/5 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-0 left-10 w-60 h-60 bg-accent-dark/5 rounded-full blur-3xl"></div>
+        <div class="absolute inset-0 opacity-[0.03]" style="background-image: url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2260%22 height=%2260%22%3E%3Cpath d=%22M60 0H0v60%22 fill=%22none%22 stroke=%22%2338bdf8%22 stroke-width=%220.5%22/%3E%3C/svg%3E');"></div>
+
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 text-center">
+            <h1 class="animate-fadeInUp delay-100 font-heading text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight mb-4">
+                Institut <span class="shimmer-text">Fortunatus</span>
+            </h1>
+            <p class="animate-fadeInUp delay-200 text-lg md:text-xl text-navy-300 max-w-2xl mx-auto mb-8">
+                Catalogue Logistique & Supply Chain Miniers — Des formations terrain pour professionnaliser vos équipes
+            </p>
+            <div class="animate-fadeInUp delay-300 flex flex-col sm:flex-row gap-3 justify-center">
+                <a href="#catalogue" class="bg-gradient-to-r from-accent-dark to-accent text-white font-bold py-3.5 px-7 rounded-xl transition-all duration-300 hover:-translate-y-1 shadow-lg shadow-accent/20 hover:shadow-xl hover:shadow-accent/30 inline-flex items-center justify-center">
+                    <i class="fas fa-book-open mr-2"></i>Explorer le catalogue
+                </a>
+                <a href="./assets/res/catalogue.pdf" class="border-2 border-navy-600 hover:border-accent text-navy-200 hover:text-accent font-bold py-3.5 px-7 rounded-xl transition-all duration-300 hover:-translate-y-1 inline-flex items-center justify-center">
+                    <i class="fas fa-download mr-2"></i>Télécharger le PDF
+                </a>
+            </div>
+
+            <!-- Stats row -->
+            <div class="mt-14 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto animate-fadeInUp delay-300">
+                <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-4">
+                    <p class="font-heading text-2xl font-extrabold text-accent">20+</p>
+                    <p class="text-xs text-navy-400 mt-1">Formations</p>
+                </div>
+                <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-4">
+                    <p class="font-heading text-2xl font-extrabold text-accent">4</p>
+                    <p class="text-xs text-navy-400 mt-1">Catégories</p>
+                </div>
+                <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-4">
+                    <p class="font-heading text-2xl font-extrabold text-accent">100%</p>
+                    <p class="text-xs text-navy-400 mt-1">Pratique terrain</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Wave -->
+        <div class="absolute bottom-0 left-0 right-0">
+            <svg viewBox="0 0 1440 80" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full">
+                <path d="M0 80L48 72C96 64 192 48 288 40C384 32 480 32 576 36C672 40 768 48 864 50C960 52 1056 48 1152 42C1248 36 1344 28 1392 24L1440 20V80H0Z" class="fill-white dark:fill-navy-950"/>
+            </svg>
+        </div>
+    </section>
+
+    <!-- ========== FILTER BAR ========== -->
+    <section id="catalogue" class="py-5 bg-white dark:bg-navy-950 gradient-border-bottom sticky top-20 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-wrap gap-2 justify-center">
+                <button class="filter-btn active px-5 py-2.5 rounded-xl text-sm font-semibold border border-navy-200 dark:border-navy-700" data-filter="all">
+                    <i class="fas fa-th-large mr-1.5 text-xs"></i>Toutes
+                </button>
+                <button class="filter-btn px-5 py-2.5 rounded-xl text-sm font-semibold text-navy-600 dark:text-navy-300 border border-navy-200 dark:border-navy-700 bg-white dark:bg-navy-900" data-filter="metiers">
+                    <i class="fas fa-hard-hat mr-1.5 text-xs"></i>Métiers miniers
+                </button>
+                <button class="filter-btn px-5 py-2.5 rounded-xl text-sm font-semibold text-navy-600 dark:text-navy-300 border border-navy-200 dark:border-navy-700 bg-white dark:bg-navy-900" data-filter="specialisees">
+                    <i class="fas fa-flask mr-1.5 text-xs"></i>Spécialisées
+                </button>
+                <button class="filter-btn px-5 py-2.5 rounded-xl text-sm font-semibold text-navy-600 dark:text-navy-300 border border-navy-200 dark:border-navy-700 bg-white dark:bg-navy-900" data-filter="transversales">
+                    <i class="fas fa-project-diagram mr-1.5 text-xs"></i>Transversales
+                </button>
+                <button class="filter-btn px-5 py-2.5 rounded-xl text-sm font-semibold text-navy-600 dark:text-navy-300 border border-navy-200 dark:border-navy-700 bg-white dark:bg-navy-900" data-filter="reglementaires">
+                    <i class="fas fa-shield-alt mr-1.5 text-xs"></i>Réglementaires
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== SECTION 1: MÉTIERS ========== -->
+    <section class="py-14 bg-white dark:bg-navy-950" data-category="metiers">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            <!-- Section header -->
+            <div class="mb-10 reveal">
+                <h2 class="font-heading text-2xl md:text-3xl font-extrabold text-navy-800 dark:text-white">Métiers de la Logistique & Supply Chain Miniers</h2>
+                <div class="section-divider mt-3 mb-4"></div>
+                <p class="text-navy-500 dark:text-navy-400 max-w-3xl">Formations structurées par niveau de responsabilité, du terrain à la direction, pour professionnaliser les apprenants sur des métiers spécifiques.</p>
+            </div>
+
+            <!-- 1.1 Opérationnels -->
+            <div class="mb-12 reveal">
+                <h3 class="font-heading text-lg font-bold text-navy-700 dark:text-navy-200 mb-5 flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-lg bg-blue-500/10 flex items-center justify-center">
+                        <i class="fas fa-hard-hat text-blue-500 text-sm"></i>
+                    </div>
+                    Métiers opérationnels <span class="text-sm font-normal text-navy-400">(niveau terrain)</span>
+                </h3>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+
+                    <div class="formation-card cat-operationnel bg-white dark:bg-navy-900 rounded-xl p-5 border border-navy-100 dark:border-navy-800 shadow-sm" onclick="openModal('Magasinier minier', 'Cette formation prépare aux responsabilités de magasinier en environnement minier : réception, stockage, distribution des pièces et consommables, gestion des inventaires, application des normes de sécurité.', '5 jours')">
+                        <div class="flex justify-between items-start mb-2">
+                            <h4 class="font-heading font-bold text-navy-800 dark:text-white text-sm">Magasinier minier</h4>
+                            <span class="badge-operationnel text-xs px-2.5 py-1 rounded-lg font-semibold whitespace-nowrap ml-2">Opérationnel</span>
+                        </div>
+                        <p class="text-sm text-navy-500 dark:text-navy-400 leading-relaxed line-clamp-2 mb-3">Réception, stockage, distribution des pièces et consommables, gestion des inventaires, normes de sécurité.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs text-navy-400 flex items-center gap-1"><i class="far fa-clock"></i>5 jours</span>
+                            <span class="text-accent-dark dark:text-accent text-xs font-semibold flex items-center gap-1 hover:gap-2 transition-all">Aperçu <i class="fas fa-arrow-right text-[10px]"></i></span>
+                        </div>
+                    </div>
+
+                    <div class="formation-card cat-operationnel bg-white dark:bg-navy-900 rounded-xl p-5 border border-navy-100 dark:border-navy-800 shadow-sm" onclick="openModal('Aide-magasinier / agent de magasin minier', 'Formation de base aux opérations de magasinage : classement, étiquetage, préparation des commandes, utilisation des équipements de manutention simple.', '3 jours')">
+                        <div class="flex justify-between items-start mb-2">
+                            <h4 class="font-heading font-bold text-navy-800 dark:text-white text-sm">Aide-magasinier</h4>
+                            <span class="badge-operationnel text-xs px-2.5 py-1 rounded-lg font-semibold whitespace-nowrap ml-2">Opérationnel</span>
+                        </div>
+                        <p class="text-sm text-navy-500 dark:text-navy-400 leading-relaxed line-clamp-2 mb-3">Classement, étiquetage, préparation des commandes, utilisation des équipements de manutention simple.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs text-navy-400 flex items-center gap-1"><i class="far fa-clock"></i>3 jours</span>
+                            <span class="text-accent-dark dark:text-accent text-xs font-semibold flex items-center gap-1 hover:gap-2 transition-all">Aperçu <i class="fas fa-arrow-right text-[10px]"></i></span>
+                        </div>
+                    </div>
+
+                    <div class="formation-card cat-operationnel bg-white dark:bg-navy-900 rounded-xl p-5 border border-navy-100 dark:border-navy-800 shadow-sm" onclick="openModal('Agent de réception et d\'expédition minière', 'Maîtrise des processus de réception (contrôle qualité, quantité) et d\'expédition (emballage, documentation) des marchandises sur site minier.', '4 jours')">
+                        <div class="flex justify-between items-start mb-2">
+                            <h4 class="font-heading font-bold text-navy-800 dark:text-white text-sm">Agent réception/expédition</h4>
+                            <span class="badge-operationnel text-xs px-2.5 py-1 rounded-lg font-semibold whitespace-nowrap ml-2">Opérationnel</span>
+                        </div>
+                        <p class="text-sm text-navy-500 dark:text-navy-400 leading-relaxed line-clamp-2 mb-3">Contrôle qualité/quantité à réception, emballage, documentation pour expédition.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs text-navy-400 flex items-center gap-1"><i class="far fa-clock"></i>4 jours</span>
+                            <span class="text-accent-dark dark:text-accent text-xs font-semibold flex items-center gap-1 hover:gap-2 transition-all">Aperçu <i class="fas fa-arrow-right text-[10px]"></i></span>
+                        </div>
+                    </div>
+
+                    <div class="formation-card cat-operationnel bg-white dark:bg-navy-900 rounded-xl p-5 border border-navy-100 dark:border-navy-800 shadow-sm" onclick="openModal('Cariste et manutentionnaire sur site minier', 'Formation à la conduite sécurisée des chariots élévateurs et engins de manutention en environnement minier, maintenance de premier niveau.', '4 jours')">
+                        <div class="flex justify-between items-start mb-2">
+                            <h4 class="font-heading font-bold text-navy-800 dark:text-white text-sm">Cariste / Manutentionnaire</h4>
+                            <span class="badge-operationnel text-xs px-2.5 py-1 rounded-lg font-semibold whitespace-nowrap ml-2">Opérationnel</span>
+                        </div>
+                        <p class="text-sm text-navy-500 dark:text-navy-400 leading-relaxed line-clamp-2 mb-3">Conduite sécurisée des chariots, engins de manutention, maintenance de premier niveau.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs text-navy-400 flex items-center gap-1"><i class="far fa-clock"></i>4 jours</span>
+                            <span class="text-accent-dark dark:text-accent text-xs font-semibold flex items-center gap-1 hover:gap-2 transition-all">Aperçu <i class="fas fa-arrow-right text-[10px]"></i></span>
+                        </div>
+                    </div>
+
+                    <div class="formation-card cat-operationnel bg-white dark:bg-navy-900 rounded-xl p-5 border border-navy-100 dark:border-navy-800 shadow-sm" onclick="openModal('Conducteur d\'engins logistiques', 'Conduite spécialisée des engins logistiques (chariots, grues auxiliaires, convoyeurs) avec focus sécurité et productivité.', '5 jours')">
+                        <div class="flex justify-between items-start mb-2">
+                            <h4 class="font-heading font-bold text-navy-800 dark:text-white text-sm">Conducteur d'engins</h4>
+                            <span class="badge-operationnel text-xs px-2.5 py-1 rounded-lg font-semibold whitespace-nowrap ml-2">Opérationnel</span>
+                        </div>
+                        <p class="text-sm text-navy-500 dark:text-navy-400 leading-relaxed line-clamp-2 mb-3">Conduite spécialisée des engins logistiques (chariots, grues, convoyeurs).</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs text-navy-400 flex items-center gap-1"><i class="far fa-clock"></i>5 jours</span>
+                            <span class="text-accent-dark dark:text-accent text-xs font-semibold flex items-center gap-1 hover:gap-2 transition-all">Aperçu <i class="fas fa-arrow-right text-[10px]"></i></span>
+                        </div>
+                    </div>
+
+                    <div class="formation-card cat-operationnel bg-white dark:bg-navy-900 rounded-xl p-5 border border-navy-100 dark:border-navy-800 shadow-sm" onclick="openModal('Manutentionnaire spécialisé en produits dangereux', 'Formation spécifique à la manipulation, l\'étiquetage et le stockage des produits dangereux (ADR, IMDG) en environnement minier.', '4 jours')">
+                        <div class="flex justify-between items-start mb-2">
+                            <h4 class="font-heading font-bold text-navy-800 dark:text-white text-sm">Manutentionnaire produits dangereux</h4>
+                            <span class="badge-operationnel text-xs px-2.5 py-1 rounded-lg font-semibold whitespace-nowrap ml-2">Spécialisé</span>
+                        </div>
+                        <p class="text-sm text-navy-500 dark:text-navy-400 leading-relaxed line-clamp-2 mb-3">Manipulation, étiquetage, stockage des produits dangereux (ADR, IMDG).</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs text-navy-400 flex items-center gap-1"><i class="far fa-clock"></i>4 jours</span>
+                            <span class="text-accent-dark dark:text-accent text-xs font-semibold flex items-center gap-1 hover:gap-2 transition-all">Aperçu <i class="fas fa-arrow-right text-[10px]"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 1.2 Techniques -->
+            <div class="reveal">
+                <h3 class="font-heading text-lg font-bold text-navy-700 dark:text-navy-200 mb-5 flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-lg bg-accent/10 flex items-center justify-center">
+                        <i class="fas fa-tools text-accent-dark dark:text-accent text-sm"></i>
+                    </div>
+                    Métiers techniques <span class="text-sm font-normal text-navy-400">(gestion spécialisée)</span>
+                </h3>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+
+                    <div class="formation-card cat-technique bg-white dark:bg-navy-900 rounded-xl p-5 border border-navy-100 dark:border-navy-800 shadow-sm" onclick="openModal('Gestionnaire de stocks miniers', 'Maîtrise des techniques avancées de gestion des stocks : prévision, réapprovisionnement, optimisation des niveaux, analyse des rotations.', '5 jours')">
+                        <div class="flex justify-between items-start mb-2">
+                            <h4 class="font-heading font-bold text-navy-800 dark:text-white text-sm">Gestionnaire de stocks</h4>
+                            <span class="badge-technique text-xs px-2.5 py-1 rounded-lg font-semibold whitespace-nowrap ml-2">Technique</span>
+                        </div>
+                        <p class="text-sm text-navy-500 dark:text-navy-400 leading-relaxed line-clamp-2 mb-3">Prévision, réapprovisionnement, optimisation des niveaux, analyse des rotations.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs text-navy-400 flex items-center gap-1"><i class="far fa-clock"></i>5 jours</span>
+                            <span class="text-accent-dark dark:text-accent text-xs font-semibold flex items-center gap-1 hover:gap-2 transition-all">Aperçu <i class="fas fa-arrow-right text-[10px]"></i></span>
+                        </div>
+                    </div>
+
+                    <div class="formation-card cat-technique bg-white dark:bg-navy-900 rounded-xl p-5 border border-navy-100 dark:border-navy-800 shadow-sm" onclick="openModal('Gestionnaire approvisionnement pièces de rechange', 'Spécialisation dans la gestion des pièces critiques : identification, sourcing, gestion des stocks de sécurité, suivi des consommations.', '5 jours')">
+                        <div class="flex justify-between items-start mb-2">
+                            <h4 class="font-heading font-bold text-navy-800 dark:text-white text-sm">Gestionnaire approvisionnement</h4>
+                            <span class="badge-technique text-xs px-2.5 py-1 rounded-lg font-semibold whitespace-nowrap ml-2">Technique</span>
+                        </div>
+                        <p class="text-sm text-navy-500 dark:text-navy-400 leading-relaxed line-clamp-2 mb-3">Gestion des pièces critiques, stocks de sécurité, suivi des consommations.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs text-navy-400 flex items-center gap-1"><i class="far fa-clock"></i>5 jours</span>
+                            <span class="text-accent-dark dark:text-accent text-xs font-semibold flex items-center gap-1 hover:gap-2 transition-all">Aperçu <i class="fas fa-arrow-right text-[10px]"></i></span>
+                        </div>
+                    </div>
+
+                    <div class="formation-card cat-technique bg-white dark:bg-navy-900 rounded-xl p-5 border border-navy-100 dark:border-navy-800 shadow-sm" onclick="openModal('Gestionnaire d\'entrepôt minier', 'Formation complète à la gestion d\'un entrepôt minier : organisation des espaces, optimisation des flux, management d\'équipe, indicateurs.', '5 jours')">
+                        <div class="flex justify-between items-start mb-2">
+                            <h4 class="font-heading font-bold text-navy-800 dark:text-white text-sm">Gestionnaire d'entrepôt</h4>
+                            <span class="badge-technique text-xs px-2.5 py-1 rounded-lg font-semibold whitespace-nowrap ml-2">Technique</span>
+                        </div>
+                        <p class="text-sm text-navy-500 dark:text-navy-400 leading-relaxed line-clamp-2 mb-3">Organisation des espaces, optimisation des flux, management d'équipe.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs text-navy-400 flex items-center gap-1"><i class="far fa-clock"></i>5 jours</span>
+                            <span class="text-accent-dark dark:text-accent text-xs font-semibold flex items-center gap-1 hover:gap-2 transition-all">Aperçu <i class="fas fa-arrow-right text-[10px]"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== SECTION 2: SPÉCIALISÉES ========== -->
+    <section class="py-14 bg-navy-50 dark:bg-navy-900/50" data-category="specialisees">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="mb-10 reveal">
+                <h2 class="font-heading text-2xl md:text-3xl font-extrabold text-navy-800 dark:text-white">Formations Spécialisées de Renforcement</h2>
+                <div class="section-divider mt-3 mb-4"></div>
+                <p class="text-navy-500 dark:text-navy-400 max-w-3xl">Formations courtes pour approfondir des compétences spécifiques et techniques afin d'optimiser la performance logistique.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4 reveal">
+
+                <div class="formation-card cat-specialise bg-white dark:bg-navy-900 rounded-xl p-5 border border-navy-100 dark:border-navy-800 shadow-sm" onclick="openModal('Gestion des stocks et entrepôts miniers', 'Techniques d\'inventaire, gestion des stocks stratégiques, optimisation des flux, gestion des pertes, sécurité en entrepôt, gestion des matières dangereuses, pilotage par KPI, implémentation ERP/WMS.', '4 jours')">
+                    <div class="flex justify-between items-start mb-2">
+                        <h4 class="font-heading font-bold text-navy-800 dark:text-white text-sm">Gestion des stocks et entrepôts</h4>
+                        <span class="badge-specialise text-xs px-2.5 py-1 rounded-lg font-semibold whitespace-nowrap ml-2">Spécialisé</span>
+                    </div>
+                    <p class="text-sm text-navy-500 dark:text-navy-400 leading-relaxed line-clamp-2 mb-3">Techniques d'inventaire, optimisation des flux, gestion des pertes, pilotage KPI, ERP/WMS.</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs text-navy-400 flex items-center gap-1"><i class="far fa-clock"></i>4 jours</span>
+                        <span class="text-accent-dark dark:text-accent text-xs font-semibold flex items-center gap-1 hover:gap-2 transition-all">Aperçu <i class="fas fa-arrow-right text-[10px]"></i></span>
+                    </div>
+                </div>
+
+                <div class="formation-card cat-specialise bg-white dark:bg-navy-900 rounded-xl p-5 border border-navy-100 dark:border-navy-800 shadow-sm" onclick="openModal('Approvisionnement et achats miniers', 'Techniques d\'approvisionnement en zones isolées, gestion de la chaîne d\'approvisionnement en Afrique, relation fournisseurs, négociation de contrats, sourcing international.', '4 jours')">
+                    <div class="flex justify-between items-start mb-2">
+                        <h4 class="font-heading font-bold text-navy-800 dark:text-white text-sm">Approvisionnement et achats</h4>
+                        <span class="badge-specialise text-xs px-2.5 py-1 rounded-lg font-semibold whitespace-nowrap ml-2">Spécialisé</span>
+                    </div>
+                    <p class="text-sm text-navy-500 dark:text-navy-400 leading-relaxed line-clamp-2 mb-3">Approvisionnement zones isolées, négociation contrats, sourcing international.</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs text-navy-400 flex items-center gap-1"><i class="far fa-clock"></i>4 jours</span>
+                        <span class="text-accent-dark dark:text-accent text-xs font-semibold flex items-center gap-1 hover:gap-2 transition-all">Aperçu <i class="fas fa-arrow-right text-[10px]"></i></span>
+                    </div>
+                </div>
+
+                <div class="formation-card cat-specialise bg-white dark:bg-navy-900 rounded-xl p-5 border border-navy-100 dark:border-navy-800 shadow-sm" onclick="openModal('Transport et logistique minière', 'Organisation des flux sur site, gestion du transport lourd, transport de matières dangereuses, logistique en zones difficiles, transport multimodal, gestion des convois exceptionnels.', '4 jours')">
+                    <div class="flex justify-between items-start mb-2">
+                        <h4 class="font-heading font-bold text-navy-800 dark:text-white text-sm">Transport et logistique</h4>
+                        <span class="badge-specialise text-xs px-2.5 py-1 rounded-lg font-semibold whitespace-nowrap ml-2">Spécialisé</span>
+                    </div>
+                    <p class="text-sm text-navy-500 dark:text-navy-400 leading-relaxed line-clamp-2 mb-3">Transport lourd, matières dangereuses, zones difficiles, convois exceptionnels.</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs text-navy-400 flex items-center gap-1"><i class="far fa-clock"></i>4 jours</span>
+                        <span class="text-accent-dark dark:text-accent text-xs font-semibold flex items-center gap-1 hover:gap-2 transition-all">Aperçu <i class="fas fa-arrow-right text-[10px]"></i></span>
+                    </div>
+                </div>
+
+                <div class="formation-card cat-specialise bg-white dark:bg-navy-900 rounded-xl p-5 border border-navy-100 dark:border-navy-800 shadow-sm" onclick="openModal('Performance et optimisation logistique', 'Optimisation des coûts, mise en place de KPI, lean management, logistique agile, planification intégrée, tableaux de bord, audit logistique, amélioration continue (Kaizen).', '4 jours')">
+                    <div class="flex justify-between items-start mb-2">
+                        <h4 class="font-heading font-bold text-navy-800 dark:text-white text-sm">Performance et optimisation</h4>
+                        <span class="badge-specialise text-xs px-2.5 py-1 rounded-lg font-semibold whitespace-nowrap ml-2">Spécialisé</span>
+                    </div>
+                    <p class="text-sm text-navy-500 dark:text-navy-400 leading-relaxed line-clamp-2 mb-3">Optimisation coûts, KPI, lean management, amélioration continue Kaizen.</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs text-navy-400 flex items-center gap-1"><i class="far fa-clock"></i>4 jours</span>
+                        <span class="text-accent-dark dark:text-accent text-xs font-semibold flex items-center gap-1 hover:gap-2 transition-all">Aperçu <i class="fas fa-arrow-right text-[10px]"></i></span>
+                    </div>
+                </div>
+
+                <div class="formation-card cat-specialise bg-white dark:bg-navy-900 rounded-xl p-5 border border-navy-100 dark:border-navy-800 shadow-sm" onclick="openModal('Digitalisation et outils logistiques', 'ERP appliqués à la logistique (SAP, Odoo), WMS/TMS, Excel avancé, Business Intelligence, RFID/IoT, blockchain, géolocalisation, automatisation.', '4 jours')">
+                    <div class="flex justify-between items-start mb-2">
+                        <h4 class="font-heading font-bold text-navy-800 dark:text-white text-sm">Digitalisation et outils</h4>
+                        <span class="badge-specialise text-xs px-2.5 py-1 rounded-lg font-semibold whitespace-nowrap ml-2">Spécialisé</span>
+                    </div>
+                    <p class="text-sm text-navy-500 dark:text-navy-400 leading-relaxed line-clamp-2 mb-3">ERP (SAP, Odoo), WMS/TMS, Excel avancé, BI, RFID, IoT, blockchain.</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs text-navy-400 flex items-center gap-1"><i class="far fa-clock"></i>4 jours</span>
+                        <span class="text-accent-dark dark:text-accent text-xs font-semibold flex items-center gap-1 hover:gap-2 transition-all">Aperçu <i class="fas fa-arrow-right text-[10px]"></i></span>
+                    </div>
+                </div>
+
+                <div class="formation-card cat-specialise bg-white dark:bg-navy-900 rounded-xl p-5 border border-navy-100 dark:border-navy-800 shadow-sm" onclick="openModal('Logistique sectorielle appliquée aux mines', 'Spécificités par type de mine (or, cuivre/cobalt, diamants), logistique de maintenance, logistique de l\'eau/énergie, logistique alimentaire pour camps, logistique d\'urgence.', '3 jours')">
+                    <div class="flex justify-between items-start mb-2">
+                        <h4 class="font-heading font-bold text-navy-800 dark:text-white text-sm">Logistique sectorielle mines</h4>
+                        <span class="badge-specialise text-xs px-2.5 py-1 rounded-lg font-semibold whitespace-nowrap ml-2">Spécialisé</span>
+                    </div>
+                    <p class="text-sm text-navy-500 dark:text-navy-400 leading-relaxed line-clamp-2 mb-3">Spécificités par type de mine, logistique de maintenance, camps, urgence.</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs text-navy-400 flex items-center gap-1"><i class="far fa-clock"></i>3 jours</span>
+                        <span class="text-accent-dark dark:text-accent text-xs font-semibold flex items-center gap-1 hover:gap-2 transition-all">Aperçu <i class="fas fa-arrow-right text-[10px]"></i></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== SECTION 3: TRANSVERSALES ========== -->
+    <section class="py-14 bg-white dark:bg-navy-950" data-category="transversales">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="mb-10 reveal">
+                <h2 class="font-heading text-2xl md:text-3xl font-extrabold text-navy-800 dark:text-white">Formations Transversales Appliquées au Secteur Minier</h2>
+                <div class="section-divider mt-3 mb-4"></div>
+                <p class="text-navy-500 dark:text-navy-400 max-w-3xl">Compétences générales et managériales essentielles pour travailler efficacement dans l'environnement minier.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4 reveal">
+
+                <div class="formation-card cat-transversal bg-white dark:bg-navy-900 rounded-xl p-5 border border-navy-100 dark:border-navy-800 shadow-sm" onclick="openModal('Gestion de projet supply chain minière', 'Méthodologies de gestion de projet appliquées à la logistique minière : planification, pilotage, gestion des risques, reporting.', '3 jours')">
+                    <div class="flex justify-between items-start mb-2">
+                        <h4 class="font-heading font-bold text-navy-800 dark:text-white text-sm">Gestion de projet supply chain</h4>
+                        <span class="badge-transversal text-xs px-2.5 py-1 rounded-lg font-semibold whitespace-nowrap ml-2">Transversal</span>
+                    </div>
+                    <p class="text-sm text-navy-500 dark:text-navy-400 leading-relaxed mb-3">Planification, pilotage, gestion des risques, reporting.</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs text-navy-400 flex items-center gap-1"><i class="far fa-clock"></i>3 jours</span>
+                        <span class="text-accent-dark dark:text-accent text-xs font-semibold flex items-center gap-1 hover:gap-2 transition-all">Aperçu <i class="fas fa-arrow-right text-[10px]"></i></span>
+                    </div>
+                </div>
+
+                <div class="formation-card cat-transversal bg-white dark:bg-navy-900 rounded-xl p-5 border border-navy-100 dark:border-navy-800 shadow-sm" onclick="openModal('Développement durable et RSE logistique', 'Logistique verte, gestion des déchets, recyclage, normes environnementales, stratégies ESG, logistique humanitaire.', '3 jours')">
+                    <div class="flex justify-between items-start mb-2">
+                        <h4 class="font-heading font-bold text-navy-800 dark:text-white text-sm">Développement durable & RSE</h4>
+                        <span class="badge-transversal text-xs px-2.5 py-1 rounded-lg font-semibold whitespace-nowrap ml-2">Transversal</span>
+                    </div>
+                    <p class="text-sm text-navy-500 dark:text-navy-400 leading-relaxed mb-3">Logistique verte, ESG, gestion des déchets, normes environnementales.</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs text-navy-400 flex items-center gap-1"><i class="far fa-clock"></i>3 jours</span>
+                        <span class="text-accent-dark dark:text-accent text-xs font-semibold flex items-center gap-1 hover:gap-2 transition-all">Aperçu <i class="fas fa-arrow-right text-[10px]"></i></span>
+                    </div>
+                </div>
+
+                <div class="formation-card cat-transversal bg-white dark:bg-navy-900 rounded-xl p-5 border border-navy-100 dark:border-navy-800 shadow-sm" onclick="openModal('Leadership et management en supply chain', 'Leadership personnel et d\'équipe, management en environnement minier, influence, motivation, gestion des talents.', '3 jours')">
+                    <div class="flex justify-between items-start mb-2">
+                        <h4 class="font-heading font-bold text-navy-800 dark:text-white text-sm">Leadership et management</h4>
+                        <span class="badge-transversal text-xs px-2.5 py-1 rounded-lg font-semibold whitespace-nowrap ml-2">Transversal</span>
+                    </div>
+                    <p class="text-sm text-navy-500 dark:text-navy-400 leading-relaxed mb-3">Leadership personnel, management d'équipe, motivation, gestion des talents.</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs text-navy-400 flex items-center gap-1"><i class="far fa-clock"></i>3 jours</span>
+                        <span class="text-accent-dark dark:text-accent text-xs font-semibold flex items-center gap-1 hover:gap-2 transition-all">Aperçu <i class="fas fa-arrow-right text-[10px]"></i></span>
+                    </div>
+                </div>
+
+                <div class="formation-card cat-transversal bg-white dark:bg-navy-900 rounded-xl p-5 border border-navy-100 dark:border-navy-800 shadow-sm" onclick="openModal('Anglais professionnel pour logisticiens', 'Anglais technique et professionnel spécifique à la logistique et supply chain : terminologie, rédaction de rapports, communication.', '5 jours')">
+                    <div class="flex justify-between items-start mb-2">
+                        <h4 class="font-heading font-bold text-navy-800 dark:text-white text-sm">Anglais professionnel</h4>
+                        <span class="badge-transversal text-xs px-2.5 py-1 rounded-lg font-semibold whitespace-nowrap ml-2">Transversal</span>
+                    </div>
+                    <p class="text-sm text-navy-500 dark:text-navy-400 leading-relaxed mb-3">Terminologie logistique, rédaction de rapports, communication professionnelle.</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs text-navy-400 flex items-center gap-1"><i class="far fa-clock"></i>5 jours</span>
+                        <span class="text-accent-dark dark:text-accent text-xs font-semibold flex items-center gap-1 hover:gap-2 transition-all">Aperçu <i class="fas fa-arrow-right text-[10px]"></i></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== SECTION 4: RÉGLEMENTAIRES ========== -->
+    <section class="py-14 bg-navy-50 dark:bg-navy-900/50" data-category="reglementaires">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="mb-10 reveal">
+                <h2 class="font-heading text-2xl md:text-3xl font-extrabold text-navy-800 dark:text-white">Formations Réglementaires et Conformité</h2>
+                <div class="section-divider mt-3 mb-4"></div>
+                <p class="text-navy-500 dark:text-navy-400 max-w-3xl">Maîtrise des normes, règles de sécurité et exigences légales pour une logistique minière conforme et sécurisée.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4 reveal">
+
+                <div class="formation-card cat-reglementaire bg-white dark:bg-navy-900 rounded-xl p-5 border border-navy-100 dark:border-navy-800 shadow-sm" onclick="openModal('HSE en supply chain minière', 'Hygiène, Sécurité, Environnement appliqués à la logistique minière : prévention des risques, réglementation, audits, culture sécurité.', '4 jours')">
+                    <div class="flex justify-between items-start mb-2">
+                        <h4 class="font-heading font-bold text-navy-800 dark:text-white text-sm">HSE en supply chain minière</h4>
+                        <span class="badge-reglementaire text-xs px-2.5 py-1 rounded-lg font-semibold whitespace-nowrap ml-2">Réglementaire</span>
+                    </div>
+                    <p class="text-sm text-navy-500 dark:text-navy-400 leading-relaxed mb-3">Prévention des risques, réglementation, audits, culture sécurité.</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs text-navy-400 flex items-center gap-1"><i class="far fa-clock"></i>4 jours</span>
+                        <span class="text-accent-dark dark:text-accent text-xs font-semibold flex items-center gap-1 hover:gap-2 transition-all">Aperçu <i class="fas fa-arrow-right text-[10px]"></i></span>
+                    </div>
+                </div>
+
+                <div class="formation-card cat-reglementaire bg-white dark:bg-navy-900 rounded-xl p-5 border border-navy-100 dark:border-navy-800 shadow-sm" onclick="openModal('Transport de matières dangereuses', 'Réglementation ADR, IATA, IMDG pour le transport de matières dangereuses : classification, emballage, documentation, sécurité.', '4 jours')">
+                    <div class="flex justify-between items-start mb-2">
+                        <h4 class="font-heading font-bold text-navy-800 dark:text-white text-sm">Transport matières dangereuses</h4>
+                        <span class="badge-reglementaire text-xs px-2.5 py-1 rounded-lg font-semibold whitespace-nowrap ml-2">Réglementaire</span>
+                    </div>
+                    <p class="text-sm text-navy-500 dark:text-navy-400 leading-relaxed mb-3">ADR, IATA, IMDG, classification, emballage, documentation, sécurité.</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs text-navy-400 flex items-center gap-1"><i class="far fa-clock"></i>4 jours</span>
+                        <span class="text-accent-dark dark:text-accent text-xs font-semibold flex items-center gap-1 hover:gap-2 transition-all">Aperçu <i class="fas fa-arrow-right text-[10px]"></i></span>
+                    </div>
+                </div>
+
+                <div class="formation-card cat-reglementaire bg-white dark:bg-navy-900 rounded-xl p-5 border border-navy-100 dark:border-navy-800 shadow-sm" onclick="openModal('Normes ISO logistique minière', 'ISO 9001 (qualité), 28000 (sûreté), 45001 (santé-sécurité) appliquées à la logistique minière : mise en place, certification, audits.', '3 jours')">
+                    <div class="flex justify-between items-start mb-2">
+                        <h4 class="font-heading font-bold text-navy-800 dark:text-white text-sm">Normes ISO logistique</h4>
+                        <span class="badge-reglementaire text-xs px-2.5 py-1 rounded-lg font-semibold whitespace-nowrap ml-2">Réglementaire</span>
+                    </div>
+                    <p class="text-sm text-navy-500 dark:text-navy-400 leading-relaxed mb-3">ISO 9001, 28000, 45001, mise en place, certification, audits.</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs text-navy-400 flex items-center gap-1"><i class="far fa-clock"></i>3 jours</span>
+                        <span class="text-accent-dark dark:text-accent text-xs font-semibold flex items-center gap-1 hover:gap-2 transition-all">Aperçu <i class="fas fa-arrow-right text-[10px]"></i></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== CTA SECTION ========== -->
+    <section id="contact" class="py-16 bg-gradient-to-br from-navy-900 via-navy-800 to-navy-900 text-white relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-80 h-80 bg-accent/5 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-0 left-0 w-60 h-60 bg-accent-dark/5 rounded-full blur-3xl"></div>
+        <div class="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center reveal">
+            <div class="w-16 h-16 rounded-2xl bg-accent/15 flex items-center justify-center mx-auto mb-6">
+                <i class="fas fa-graduation-cap text-accent text-2xl"></i>
+            </div>
+            <h2 class="font-heading text-3xl md:text-4xl font-extrabold mb-4">Prêt à former vos équipes ?</h2>
+            <p class="text-navy-300 text-lg max-w-xl mx-auto mb-8">Contactez notre équipe pédagogique pour construire un programme sur mesure adapté à vos besoins.</p>
+            <div class="flex flex-col sm:flex-row gap-3 justify-center">
+                <a href="./index.html#contact" class="bg-gradient-to-r from-accent-dark to-accent text-white font-bold py-3.5 px-8 rounded-xl transition-all duration-300 hover:-translate-y-1 shadow-lg shadow-accent/20 inline-flex items-center justify-center">
+                    <i class="fas fa-envelope mr-2"></i>Nous contacter
+                </a>
+                <a href="tel:+243817005764" class="border-2 border-navy-600 hover:border-accent text-navy-200 hover:text-accent font-bold py-3.5 px-8 rounded-xl transition-all duration-300 hover:-translate-y-1 inline-flex items-center justify-center">
+                    <i class="fas fa-phone mr-2"></i>+243 817 005 764
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== FOOTER ========== -->
+    <footer class="bg-navy-950 text-white pt-14 pb-8 relative overflow-hidden">
+        <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent/30 to-transparent"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-10">
+                <div>
+                    <div class="flex items-center gap-2 mb-4">
+                        <div class="w-9 h-9 rounded-lg  flex items-center justify-center">
+                            <img src="./assets/img/icon.png"/>
+                        </div>
+                        <span class="font-heading text-xl font-extrabold">
+                            <span class="text-accent">WTG</span> SARLU
+                        </span>
+                    </div>
+                    <p class="text-navy-400 text-sm leading-relaxed">Your Strategic Third-Party Logistics Partner</p>
+                </div>
+                <div>
+                    <h4 class="font-heading font-bold text-sm uppercase tracking-wider text-accent mb-4">Contact</h4>
+                    <div class="space-y-2 text-navy-400 text-sm">
+                        <p><i class="fas fa-phone mr-2 text-accent/50"></i>+243 817 005 764</p>
+                        <p><i class="fas fa-envelope mr-2 text-accent/50"></i>info@wtgsarlu.com</p>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-heading font-bold text-sm uppercase tracking-wider text-accent mb-4">Adresse</h4>
+                    <p class="text-navy-400 text-sm leading-relaxed">36 Av. Dilungu, Q/Biashara<br>C/Dilala - Lualaba, RDC</p>
+                </div>
+                <div>
+                    <h4 class="font-heading font-bold text-sm uppercase tracking-wider text-accent mb-4">Institut Fortunatus</h4>
+                    <p class="text-navy-400 text-sm leading-relaxed">Catalogue Logistique & Supply Chain Miniers 2026</p>
+                </div>
+            </div>
+            <div class="border-t border-navy-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-navy-500 text-sm">&copy; 2024 WTG SARLU - Institut Fortunatus - Tous droits réservés</p>
+                <div class="flex gap-3">
+                    <a href="#" class="w-9 h-9 rounded-lg bg-navy-800 text-navy-400 flex items-center justify-center hover:bg-accent hover:text-white transition-all duration-300 text-sm"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#" class="w-9 h-9 rounded-lg bg-navy-800 text-navy-400 flex items-center justify-center hover:bg-accent hover:text-white transition-all duration-300 text-sm"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="w-9 h-9 rounded-lg bg-navy-800 text-navy-400 flex items-center justify-center hover:bg-accent hover:text-white transition-all duration-300 text-sm"><i class="fab fa-whatsapp"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ========== MODAL ========== -->
+    <div id="formationModal" class="modal-overlay" onclick="closeModal()">
+        <div class="modal-content bg-white dark:bg-navy-900" onclick="event.stopPropagation()">
+            <!-- Modal Header -->
+            <div class="bg-gradient-to-r from-navy-800 to-navy-700 text-white p-6 rounded-t-xl relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-accent/10 rounded-full blur-2xl"></div>
+                <div class="relative flex justify-between items-start gap-4">
+                    <div>
+                        <span class="inline-block px-2.5 py-1 rounded-lg bg-accent/15 text-accent text-xs font-semibold mb-2">Formation</span>
+                        <h3 id="modalTitle" class="font-heading text-xl font-bold">Titre formation</h3>
+                    </div>
+                    <button onclick="closeModal()" class="w-9 h-9 rounded-lg bg-white/10 hover:bg-white/20 flex items-center justify-center transition flex-shrink-0 mt-1">
+                        <i class="fas fa-times text-white"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="p-6">
+                <div class="mb-6">
+                    <h4 class="font-heading font-bold text-navy-800 dark:text-white text-sm mb-2">Description détaillée</h4>
+                    <p id="modalDescription" class="text-navy-500 dark:text-navy-400 text-sm leading-relaxed">Description de la formation...</p>
+                </div>
+
+                <div class="bg-navy-50 dark:bg-navy-800 p-5 rounded-xl mb-6 border border-navy-100 dark:border-navy-700">
+                    <h4 class="font-heading font-bold text-navy-800 dark:text-white text-sm mb-3">Informations pratiques</h4>
+                    <div class="grid grid-cols-2 gap-3 text-sm">
+                        <div class="flex items-center gap-2 text-navy-600 dark:text-navy-300">
+                            <div class="w-7 h-7 rounded-md bg-accent/10 flex items-center justify-center flex-shrink-0">
+                                <i class="far fa-clock text-accent-dark dark:text-accent text-xs"></i>
+                            </div>
+                            <span>Durée: <strong id="modalDuration">variable</strong></span>
+                        </div>
+                        <div class="flex items-center gap-2 text-navy-600 dark:text-navy-300">
+                            <div class="w-7 h-7 rounded-md bg-accent/10 flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-users text-accent-dark dark:text-accent text-xs"></i>
+                            </div>
+                            <span>Groupe: <strong>8-12 pers.</strong></span>
+                        </div>
+                        <div class="flex items-center gap-2 text-navy-600 dark:text-navy-300">
+                            <div class="w-7 h-7 rounded-md bg-accent/10 flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-map-marker-alt text-accent-dark dark:text-accent text-xs"></i>
+                            </div>
+                            <span>Lieu: <strong>Intra ou inter</strong></span>
+                        </div>
+                        <div class="flex items-center gap-2 text-navy-600 dark:text-navy-300">
+                            <div class="w-7 h-7 rounded-md bg-accent/10 flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-certificate text-accent-dark dark:text-accent text-xs"></i>
+                            </div>
+                            <span>Certification: <strong>Oui</strong></span>
+                        </div>
+                    </div>
+                </div>
+
+                <h4 class="font-heading font-bold text-navy-800 dark:text-white text-sm mb-3">Pré-inscription</h4>
+                <form id="inscriptionForm" class="space-y-3">
+                    <input type="text" placeholder="Nom complet" class="form-input w-full px-4 py-3 bg-white dark:bg-navy-800 border border-navy-200 dark:border-navy-700 rounded-xl text-navy-800 dark:text-navy-100 placeholder-navy-400 dark:placeholder-navy-500 focus:outline-none" required>
+                    <input type="email" placeholder="Email professionnel" class="form-input w-full px-4 py-3 bg-white dark:bg-navy-800 border border-navy-200 dark:border-navy-700 rounded-xl text-navy-800 dark:text-navy-100 placeholder-navy-400 dark:placeholder-navy-500 focus:outline-none" required>
+                    <input type="tel" placeholder="Téléphone" class="form-input w-full px-4 py-3 bg-white dark:bg-navy-800 border border-navy-200 dark:border-navy-700 rounded-xl text-navy-800 dark:text-navy-100 placeholder-navy-400 dark:placeholder-navy-500 focus:outline-none" required>
+                    <input type="text" placeholder="Entreprise" class="form-input w-full px-4 py-3 bg-white dark:bg-navy-800 border border-navy-200 dark:border-navy-700 rounded-xl text-navy-800 dark:text-navy-100 placeholder-navy-400 dark:placeholder-navy-500 focus:outline-none" required>
+                    <select class="form-input w-full px-4 py-3 bg-white dark:bg-navy-800 border border-navy-200 dark:border-navy-700 rounded-xl text-navy-800 dark:text-navy-100 focus:outline-none">
+                        <option value="">Nombre de participants</option>
+                        <option value="1">1 personne</option>
+                        <option value="2-3">2-3 personnes</option>
+                        <option value="4-6">4-6 personnes</option>
+                        <option value="7+">Groupe (7+)</option>
+                    </select>
+                    <textarea rows="2" placeholder="Message ou demande spécifique" class="form-input w-full px-4 py-3 bg-white dark:bg-navy-800 border border-navy-200 dark:border-navy-700 rounded-xl text-navy-800 dark:text-navy-100 placeholder-navy-400 dark:placeholder-navy-500 focus:outline-none resize-none"></textarea>
+                    <input type="hidden" id="formationTitre" value="">
+                    <button type="submit" class="w-full bg-gradient-to-r from-accent-dark to-accent text-white font-bold py-3.5 rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-accent/25 hover:-translate-y-0.5">
+                        <i class="fas fa-paper-plane mr-2"></i>Envoyer ma demande d'inscription
+                    </button>
+                </form>
+                <p class="text-xs text-navy-400 mt-3 text-center">Un conseiller vous contactera sous 48h pour finaliser votre inscription.</p>
+                <div id="formSuccessMsg" class="hidden mt-4 p-4 rounded-xl bg-accent/10 border border-accent/20 text-center">
+                    <i class="fas fa-check-circle text-accent-dark dark:text-accent text-lg mb-1"></i>
+                    <p class="text-accent-dark dark:text-accent font-semibold text-sm">Demande envoyée avec succès !</p>
+                    <p class="text-navy-500 dark:text-navy-400 text-xs mt-1">Un conseiller vous contactera sous 48h.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== SCRIPTS ========== -->
+    <script>
+        // Dark mode detection
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+        }
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(event) {
+            if (event.matches) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        });
+
+        // Mobile menu
+        var mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        var mobileMenu = document.getElementById('mobileMenu');
+        var menuIcon = mobileMenuBtn.querySelector('i');
+
+        mobileMenuBtn.addEventListener('click', function() {
+            mobileMenu.classList.toggle('open');
+            if (mobileMenu.classList.contains('open')) {
+                menuIcon.classList.remove('fa-bars');
+                menuIcon.classList.add('fa-times');
+            } else {
+                menuIcon.classList.remove('fa-times');
+                menuIcon.classList.add('fa-bars');
+            }
+        });
+
+        document.querySelectorAll('#mobileMenu a').forEach(function(link) {
+            link.addEventListener('click', function() {
+                mobileMenu.classList.remove('open');
+                menuIcon.classList.remove('fa-times');
+                menuIcon.classList.add('fa-bars');
+            });
+        });
+
+        // Nav scroll
+        var nav = document.getElementById('mainNav');
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 50) {
+                nav.classList.add('nav-scrolled');
+            } else {
+                nav.classList.remove('nav-scrolled');
+            }
+        });
+
+        // ===== MODAL =====
+        var modal = document.getElementById('formationModal');
+        var modalTitle = document.getElementById('modalTitle');
+        var modalDescription = document.getElementById('modalDescription');
+        var modalDuration = document.getElementById('modalDuration');
+        var formationTitre = document.getElementById('formationTitre');
+
+        function openModal(titre, description, duree) {
+            modalTitle.textContent = titre;
+            modalDescription.textContent = description;
+            modalDuration.textContent = duree || 'variable';
+            formationTitre.value = titre;
+            document.getElementById('formSuccessMsg').classList.add('hidden');
+            document.getElementById('inscriptionForm').style.display = 'block';
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && modal.style.display === 'flex') {
+                closeModal();
+            }
+        });
+
+        // Form submit (no alert!)
+        document.getElementById('inscriptionForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            this.style.display = 'none';
+            document.getElementById('formSuccessMsg').classList.remove('hidden');
+            setTimeout(function() {
+                closeModal();
+                document.getElementById('inscriptionForm').reset();
+                document.getElementById('inscriptionForm').style.display = 'block';
+                document.getElementById('formSuccessMsg').classList.add('hidden');
+            }, 3000);
+        });
+
+        // ===== FILTERS =====
+        var filterButtons = document.querySelectorAll('.filter-btn');
+        var categorySections = {
+            'metiers': document.querySelector('[data-category="metiers"]'),
+            'specialisees': document.querySelector('[data-category="specialisees"]'),
+            'transversales': document.querySelector('[data-category="transversales"]'),
+            'reglementaires': document.querySelector('[data-category="reglementaires"]')
+        };
+
+        filterButtons.forEach(function(button) {
+            button.addEventListener('click', function() {
+                // Reset all buttons
+                filterButtons.forEach(function(btn) {
+                    btn.classList.remove('active');
+                });
+                // Activate clicked
+                this.classList.add('active');
+
+                var filter = this.getAttribute('data-filter');
+
+                if (filter === 'all') {
+                    Object.values(categorySections).forEach(function(section) {
+                        if (section) {
+                            section.classList.remove('section-hidden');
+                        }
+                    });
+                } else {
+                    Object.entries(categorySections).forEach(function(entry) {
+                        if (entry[1]) {
+                            if (entry[0] === filter) {
+                                entry[1].classList.remove('section-hidden');
+                            } else {
+                                entry[1].classList.add('section-hidden');
+                            }
+                        }
+                    });
+                }
+            });
+        });
+
+        // ===== REVEAL ON SCROLL =====
+        var revealElements = document.querySelectorAll('.reveal');
+        var revealObserver = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: '0px 0px -40px 0px'
+        });
+
+        revealElements.forEach(function(el) {
+            revealObserver.observe(el);
+        });
+    </script>
+</body>
+</html>
